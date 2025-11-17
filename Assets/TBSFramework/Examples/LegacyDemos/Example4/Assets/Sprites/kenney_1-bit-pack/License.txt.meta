@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 82403fb9c9b5947449ac85b285966936
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 50282
+  packageName: Turn Based Strategy Framework
+  packageVersion: 4.0.3
+  assetPath: Assets/TBSFramework/Examples/LegacyDemos/Example4/Assets/Sprites/kenney_1-bit-pack/License.txt
+  uploadId: 811342

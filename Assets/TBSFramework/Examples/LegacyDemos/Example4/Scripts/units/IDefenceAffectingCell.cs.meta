@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 9350370c21713254b8796398a3dfd4c6
+AssetOrigin:
+  serializedVersion: 1
+  productId: 50282
+  packageName: Turn Based Strategy Framework
+  packageVersion: 4.0.3
+  assetPath: Assets/TBSFramework/Examples/LegacyDemos/Example4/Scripts/units/IDefenceAffectingCell.cs
+  uploadId: 811342

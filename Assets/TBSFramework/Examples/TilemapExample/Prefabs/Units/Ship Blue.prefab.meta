@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 851e814bf7da9104f9292799ac4a47c8
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 50282
+  packageName: Turn Based Strategy Framework
+  packageVersion: 4.0.3
+  assetPath: Assets/TBSFramework/Examples/TilemapExample/Prefabs/Units/Ship Blue.prefab
+  uploadId: 811342

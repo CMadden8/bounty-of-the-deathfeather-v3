@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: f1a42370a20e6b8469cbc702c865d71e
+AssetOrigin:
+  serializedVersion: 1
+  productId: 50282
+  packageName: Turn Based Strategy Framework
+  packageVersion: 4.0.3
+  assetPath: Assets/TBSFramework/Examples/TilemapExample/Scripts/Cells/DataTile.cs
+  uploadId: 811342

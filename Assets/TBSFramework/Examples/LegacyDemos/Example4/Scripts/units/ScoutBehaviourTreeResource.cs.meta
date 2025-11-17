@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 40927096f1c8be747aef58cd4c3892ae
+AssetOrigin:
+  serializedVersion: 1
+  productId: 50282
+  packageName: Turn Based Strategy Framework
+  packageVersion: 4.0.3
+  assetPath: Assets/TBSFramework/Examples/LegacyDemos/Example4/Scripts/units/ScoutBehaviourTreeResource.cs
+  uploadId: 811342

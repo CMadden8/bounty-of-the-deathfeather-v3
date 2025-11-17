@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: e469188674995954b9cb61a5f98777ce
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 50282
+  packageName: Turn Based Strategy Framework
+  packageVersion: 4.0.3
+  assetPath: Assets/TBSFramework/Examples/ClashOfHeroes/Scenes/Level2.unity
+  uploadId: 811342

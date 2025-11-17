@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 26ba632981c7cc94f86cd7ea6e84eb68
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 50282
+  packageName: Turn Based Strategy Framework
+  packageVersion: 4.0.3
+  assetPath: Assets/TBSFramework/Examples/TilemapExample/Prefabs/Units/Infantry.prefab
+  uploadId: 811342

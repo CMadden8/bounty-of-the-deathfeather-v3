@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: c8df5b3dee0f9b94baf099644978da09
+AssetOrigin:
+  serializedVersion: 1
+  productId: 50282
+  packageName: Turn Based Strategy Framework
+  packageVersion: 4.0.3
+  assetPath: Assets/TBSFramework/Examples/LegacyDemos/Example4/Scripts/ai/CaptureDefencePositionEvaluator.cs
+  uploadId: 811342

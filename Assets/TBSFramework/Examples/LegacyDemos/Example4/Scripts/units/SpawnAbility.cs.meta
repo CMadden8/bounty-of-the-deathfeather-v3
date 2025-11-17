@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 286d9863cb165a74a9ef2f614c500e4a
+AssetOrigin:
+  serializedVersion: 1
+  productId: 50282
+  packageName: Turn Based Strategy Framework
+  packageVersion: 4.0.3
+  assetPath: Assets/TBSFramework/Examples/LegacyDemos/Example4/Scripts/units/SpawnAbility.cs
+  uploadId: 811342

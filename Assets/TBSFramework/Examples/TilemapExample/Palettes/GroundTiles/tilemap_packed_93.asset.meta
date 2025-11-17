@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 94851655a08967b4bb29404a51a8be62
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 50282
+  packageName: Turn Based Strategy Framework
+  packageVersion: 4.0.3
+  assetPath: Assets/TBSFramework/Examples/TilemapExample/Palettes/GroundTiles/tilemap_packed_93.asset
+  uploadId: 811342

@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 9c0c6ae07ed73204ab9cd8c004868b1f
+AssetOrigin:
+  serializedVersion: 1
+  productId: 50282
+  packageName: Turn Based Strategy Framework
+  packageVersion: 4.0.3
+  assetPath: Assets/TBSFramework/Examples/LegacyDemos/Example4/Scripts/units/HealthUpdate.cs
+  uploadId: 811342

@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 07d8031b10a8f3a46a269061b261a608
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 50282
+  packageName: Turn Based Strategy Framework
+  packageVersion: 4.0.3
+  assetPath: Assets/TBSFramework/Examples/TilemapExample/Scripts/FloatingUnitShader.shader
+  uploadId: 811342

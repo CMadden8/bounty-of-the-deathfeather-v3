@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 9d1eb5825c9d1114c991a0a20da9c43a
+AssetOrigin:
+  serializedVersion: 1
+  productId: 50282
+  packageName: Turn Based Strategy Framework
+  packageVersion: 4.0.3
+  assetPath: Assets/TBSFramework/Examples/LegacyDemos/Example4/Scripts/units/IncomeGenerationAbility.cs
+  uploadId: 811342

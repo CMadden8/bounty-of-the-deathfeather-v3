@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: a0187fc816439de45bc463cd44a58bbe
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 50282
+  packageName: Turn Based Strategy Framework
+  packageVersion: 4.0.3
+  assetPath: Assets/TBSFramework/Examples/TilemapExample/ExplosionAnimationController.controller
+  uploadId: 811342

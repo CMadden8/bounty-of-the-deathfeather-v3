@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: ea71d79987ffa5f499c5989a49fa4765
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 50282
+  packageName: Turn Based Strategy Framework
+  packageVersion: 4.0.3
+  assetPath: Assets/TBSFramework/Examples/LegacyDemos/Example1/Materials/Leaves.mat
+  uploadId: 811342

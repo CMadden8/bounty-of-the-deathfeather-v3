@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 0978379638da34d48bc88043e9472058
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 50282
+  packageName: Turn Based Strategy Framework
+  packageVersion: 4.0.3
+  assetPath: Assets/TBSFramework/Examples/LegacyDemos/Example1/Scenes/Example1-multi.unity
+  uploadId: 811342

@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 693855c3a9ca48b409c8ad92f440b7f8
+AssetOrigin:
+  serializedVersion: 1
+  productId: 50282
+  packageName: Turn Based Strategy Framework
+  packageVersion: 4.0.3
+  assetPath: Assets/TBSFramework/Examples/LegacyDemos/Example4/Scripts/ai/BarracksBehaviourTreeNode.cs
+  uploadId: 811342

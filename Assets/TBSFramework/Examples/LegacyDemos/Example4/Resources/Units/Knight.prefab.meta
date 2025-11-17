@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: c17b39c280646514bb2b543bbc4b81e3
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 50282
+  packageName: Turn Based Strategy Framework
+  packageVersion: 4.0.3
+  assetPath: Assets/TBSFramework/Examples/LegacyDemos/Example4/Resources/Units/Knight.prefab
+  uploadId: 811342

@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 8916101881fc19c48b39578d02645ac5
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 50282
+  packageName: Turn Based Strategy Framework
+  packageVersion: 4.0.3
+  assetPath: Assets/TBSFramework/External/tbsf-common/common/network/NetworkException.cs
+  uploadId: 811342

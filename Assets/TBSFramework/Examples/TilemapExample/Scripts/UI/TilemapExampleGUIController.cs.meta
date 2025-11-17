@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: a75651c8ef58d5547b4467b34f3b7f76
+AssetOrigin:
+  serializedVersion: 1
+  productId: 50282
+  packageName: Turn Based Strategy Framework
+  packageVersion: 4.0.3
+  assetPath: Assets/TBSFramework/Examples/TilemapExample/Scripts/UI/TilemapExampleGUIController.cs
+  uploadId: 811342

@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: ed6b4548b51453345b324889f53a0fdc
+AssetOrigin:
+  serializedVersion: 1
+  productId: 50282
+  packageName: Turn Based Strategy Framework
+  packageVersion: 4.0.3
+  assetPath: Assets/TBSFramework/Examples/LegacyDemos/Example4/Scripts/ui/SummaryUI.cs
+  uploadId: 811342

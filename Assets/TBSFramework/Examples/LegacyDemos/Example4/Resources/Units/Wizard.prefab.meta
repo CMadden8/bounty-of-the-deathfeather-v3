@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 0b4a4828579c70b45abf2f9e8b436b97
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 50282
+  packageName: Turn Based Strategy Framework
+  packageVersion: 4.0.3
+  assetPath: Assets/TBSFramework/Examples/LegacyDemos/Example4/Resources/Units/Wizard.prefab
+  uploadId: 811342

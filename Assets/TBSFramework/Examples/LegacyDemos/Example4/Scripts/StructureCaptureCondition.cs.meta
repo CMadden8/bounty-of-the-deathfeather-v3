@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 1cf7f4dc81ae91c49a3c6db58d949d92
+AssetOrigin:
+  serializedVersion: 1
+  productId: 50282
+  packageName: Turn Based Strategy Framework
+  packageVersion: 4.0.3
+  assetPath: Assets/TBSFramework/Examples/LegacyDemos/Example4/Scripts/StructureCaptureCondition.cs
+  uploadId: 811342

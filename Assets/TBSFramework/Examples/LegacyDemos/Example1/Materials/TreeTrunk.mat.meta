@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: ffce1038990fe3245b8d1cf99abda2bf
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 50282
+  packageName: Turn Based Strategy Framework
+  packageVersion: 4.0.3
+  assetPath: Assets/TBSFramework/Examples/LegacyDemos/Example1/Materials/TreeTrunk.mat
+  uploadId: 811342

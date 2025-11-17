@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: a46f34e7915be144fa72254f14a88fc6
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 50282
+  packageName: Turn Based Strategy Framework
+  packageVersion: 4.0.3
+  assetPath: Assets/TBSFramework/Examples/TilemapExample/Scenes/TilemapExample.unity
+  uploadId: 811342

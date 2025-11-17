@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: ad6a92b377a3d6d47a81c6daadc58751
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 50282
+  packageName: Turn Based Strategy Framework
+  packageVersion: 4.0.3
+  assetPath: Assets/TBSFramework/Examples/TilemapExample/Assets/Sprites/kenney_tiny-battle/License.txt
+  uploadId: 811342

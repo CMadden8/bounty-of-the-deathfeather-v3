@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: fa764369ccb1b7f44b5901c8b154f783
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 50282
+  packageName: Turn Based Strategy Framework
+  packageVersion: 4.0.3
+  assetPath: Assets/TBSFramework/Examples/Tutorial/Materials/RockMaterial.mat
+  uploadId: 811342

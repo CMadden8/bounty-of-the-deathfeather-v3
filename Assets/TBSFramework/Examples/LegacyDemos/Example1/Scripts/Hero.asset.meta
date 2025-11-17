@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: f8ea7b7f0332d4e4b82b63cf95418450
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 50282
+  packageName: Turn Based Strategy Framework
+  packageVersion: 4.0.3
+  assetPath: Assets/TBSFramework/Examples/LegacyDemos/Example1/Scripts/Hero.asset
+  uploadId: 811342

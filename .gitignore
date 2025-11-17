@@ -1,0 +1,10 @@
+# Unity
+Library/
+Temp/
+Logs/
+UserSettings/
+.vscode/
+.vs/
+*.log
+node_modules/
+.autogen/
