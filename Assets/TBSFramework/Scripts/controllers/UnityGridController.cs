@@ -68,6 +68,9 @@ namespace TurnBasedStrategyFramework.Unity.Controllers
 
         private void Awake()
         {
+            AutoAssignDependencies();
+            ValidateDependencies();
+
             _controller.CellManager = _cellManager;
             _controller.UnitManager = _unitManager;
             _controller.PlayerManager = _playerManager;
@@ -78,6 +81,58 @@ namespace TurnBasedStrategyFramework.Unity.Controllers
             _controller.GameStarted += OnGameStared;
             _controller.TurnStarted += OnTurnStarted;
             _controller.TurnEnded += OnTurnEnded;
+        }
+
+#if UNITY_EDITOR
+        private void OnValidate()
+        {
+            AutoAssignDependencies();
+        }
+#endif
+
+        private void Reset()
+        {
+            AutoAssignDependencies();
+        }
+
+        private void AutoAssignDependencies()
+        {
+            if (_cellManager == null)
+            {
+                _cellManager = GetComponentInChildren<UnityCellManager>();
+            }
+            if (_unitManager == null)
+            {
+                _unitManager = GetComponentInChildren<UnityUnitManager>();
+            }
+            if (_playerManager == null)
+            {
+                _playerManager = GetComponentInChildren<UnityPlayerManager>();
+            }
+            if (_turnResolver == null)
+            {
+                _turnResolver = GetComponentInChildren<UnityTurnResolver>();
+            }
+        }
+
+        private void ValidateDependencies()
+        {
+            if (_cellManager == null)
+            {
+                Debug.LogError("UnityGridController: Cell Manager reference is missing. Assign a UnityCellManager implementation.", this);
+            }
+            if (_unitManager == null)
+            {
+                Debug.LogWarning("UnityGridController: Unit Manager reference is missing. The game will start without units unless one is assigned.", this);
+            }
+            if (_playerManager == null)
+            {
+                Debug.LogWarning("UnityGridController: Player Manager reference is missing. No players will be initialized.", this);
+            }
+            if (_turnResolver == null)
+            {
+                Debug.LogError("UnityGridController: Turn Resolver reference is missing. Assign a UnityTurnResolver implementation.", this);
+            }
         }
 
         public virtual void InitializeGame(bool isNetworkInvoked = false)

@@ -4,7 +4,7 @@
 PlayerSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 28
-  productGUID: 00000000000000000000000000000000
+  productGUID: bfbb4f2d61d15a746b6b122253f47896
   AndroidProfiler: 0
   AndroidFilterTouchesWhenObscured: 0
   AndroidEnableSustainedPerformanceMode: 0
@@ -924,7 +924,7 @@ PlayerSettings:
   cloudProjectId: a8d84af5-eef7-4e12-a638-8013067c1bbb
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: 
+  projectName: Bounty_Of_The_Deathfeather_V3
   organizationId: madtrickz
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0

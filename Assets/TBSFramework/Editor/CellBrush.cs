@@ -59,17 +59,24 @@ namespace TurnBasedStrategyFramework.Unity.Editor
             }
 
             var worldPosition = gridLayout.CellToWorld(position);
+            // Add the prefab's local position as additional offset for proper alignment
+            Vector3 prefabOffset = _cellPrefab.transform.position;
+            
             if (_is2D)
             {
                 cellGO.transform.SetPositionAndRotation(
-                    new Vector3(worldPosition.x + _offset.x, worldPosition.y + _offset.y, _cellPrefab.transform.position.z + _offset.z),
+                    new Vector3(worldPosition.x + prefabOffset.x + _offset.x, 
+                               worldPosition.y + prefabOffset.y + _offset.y, 
+                               prefabOffset.z + _offset.z),
                     Quaternion.identity
                 );
             }
             else
             {
                 cellGO.transform.SetPositionAndRotation(
-                    new Vector3(worldPosition.x + _offset.x, _cellPrefab.transform.position.y + _offset.y, worldPosition.z + _offset.z),
+                    new Vector3(worldPosition.x + prefabOffset.x + _offset.x, 
+                               prefabOffset.y + _offset.y, 
+                               worldPosition.z + prefabOffset.z + _offset.z),
                     Quaternion.identity
                 );
             }
@@ -81,6 +88,21 @@ namespace TurnBasedStrategyFramework.Unity.Editor
             else
             {
                 Debug.LogWarning("Instantiated cell prefab does not have an ICell component attached!");
+            }
+        }
+
+        public override void Erase(GridLayout gridLayout, GameObject brushTarget, Vector3Int position)
+        {
+            if (!_cellsParent)
+            {
+                Debug.LogWarning("No 'CellManager' found in the scene and no 'CellsParent' assigned. Cannot erase.");
+                return;
+            }
+
+            var existingCell = GetObjectInCell(gridLayout, _cellsParent, position);
+            if (existingCell)
+            {
+                Undo.DestroyObjectImmediate(existingCell);
             }
         }
 
