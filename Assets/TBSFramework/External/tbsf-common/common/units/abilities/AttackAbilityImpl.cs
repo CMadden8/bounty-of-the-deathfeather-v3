@@ -71,6 +71,10 @@ namespace TurnBasedStrategyFramework.Common.Units.Abilities
         /// <param name="gridController">The grid controller.</param>
         public void OnUnitClicked(IUnit unit, IGridController gridController)
         {
+            if (_attackableUnits == null)
+            {
+                return;
+            }
             if (UnitReference.ActionPoints > 0 && _attackableUnits.Contains(unit))
             {
                 UnitReference.HumanExecuteAbility(new AttackCommand(unit, UnitReference.CalculateTotalDamage(unit)), gridController);
@@ -95,7 +99,7 @@ namespace TurnBasedStrategyFramework.Common.Units.Abilities
             }
 
             var enemyUnits = gridController.UnitManager.GetEnemyUnits(gridController.PlayerManager.GetPlayerByNumber(UnitReference.PlayerNumber));
-            var attackableUnits = enemyUnits.Where(u => UnitReference.IsUnitAttackable(u, u.CurrentCell, UnitReference.CurrentCell));
+            var attackableUnits = enemyUnits.Where(u => u.CurrentCell != null && UnitReference.CurrentCell != null && UnitReference.IsUnitAttackable(u, u.CurrentCell, UnitReference.CurrentCell));
             return attackableUnits.Any();
         }
 

@@ -59,6 +59,7 @@ namespace TurnBasedStrategyFramework.Common.Units.Abilities
 
             var pathCost = _path.Sum(c => c.MovementCost);
             unit.MovementPoints -= pathCost;
+            unit.ActionPoints -= 1;
 
             await controller.UnitManager.MarkAsMoving(unit, _source, _destination, _path);
             await unit.MovementAnimation(_path, _destination);

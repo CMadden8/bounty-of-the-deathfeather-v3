@@ -154,7 +154,99 @@ namespace TurnBasedStrategyFramework.Common.Units
         /// <param name="cellManager">The cell manager that provides access to all cells.</param>
         public void CachePaths(ICellManager cellManager)
         {
+            if (_unitReference.CurrentCell == null)
+            {
+                UnityEngine.Debug.LogWarning($"Cannot cache paths for unit {(_unitReference as UnityEngine.Object)?.name ?? "unknown"}: CurrentCell is null. Make sure unit is positioned on a cell.");
+                _pathCache = new Dictionary<ICell, LinkedList<ICell>>();
+                return;
+            }
             _pathCache = pathfinder.FindAllPaths(_unitReference.GetGraphEdges(cellManager), _unitReference.CurrentCell);
+        }
+
+        /// <summary>
+        /// Diagnostic helper: logs why the specified target cell is not reachable from the unit's current cell.
+        /// Useful for debugging disconnected islands, blocked neighbours, or movement cost issues.
+        /// </summary>
+        public void DebugWhyUnreachable(ICell target, ICellManager cellManager)
+        {
+            if (target == null)
+            {
+                UnityEngine.Debug.LogError("DebugWhyUnreachable: target is null");
+                return;
+            }
+
+            if (_unitReference.CurrentCell == null)
+            {
+                UnityEngine.Debug.LogWarning($"DebugWhyUnreachable: unit {(_unitReference as UnityEngine.Object)?.name ?? "unknown"} has no CurrentCell set.");
+                return;
+            }
+
+            // Ensure cache exists
+            if (_pathCache == null)
+            {
+                CachePaths(cellManager);
+            }
+
+            // If a path exists in cache, it's reachable
+            if (_pathCache != null && _pathCache.TryGetValue(target, out var path))
+            {
+                float cost = 0f;
+                ICell prev = _unitReference.CurrentCell;
+                foreach (var step in path)
+                {
+                    cost += _unitReference.GetMovementCost(prev, step);
+                    prev = step;
+                }
+                UnityEngine.Debug.Log($"DebugWhyUnreachable: target '{(target as UnityEngine.Object)?.name ?? target.GetHashCode().ToString()}' is reachable. Path cost={cost}, MovementPoints={_unitReference.MovementPoints}");
+                return;
+            }
+
+            // Not found — output diagnostic info
+            UnityEngine.Debug.Log($"DebugWhyUnreachable: No cached path to target '{(target as UnityEngine.Object)?.name ?? target.GetHashCode().ToString()}' from unit '{(_unitReference as UnityEngine.Object)?.name ?? "unknown"}'. MovementPoints={_unitReference.MovementPoints}");
+
+            // If the target itself is marked taken, that's likely the reason
+            try
+            {
+                UnityEngine.Debug.Log($"Target.IsTaken={target.IsTaken}, MovementCost={target.MovementCost}");
+            }
+            catch
+            {
+                // swallow - some ICell implementations may throw for debug
+            }
+
+            // Inspect neighbours of the target to see if any edges lead to it
+            var neighbours = target.GetNeighbours(cellManager).ToList();
+            UnityEngine.Debug.Log($"Target has {neighbours.Count} neighbours.");
+            foreach (var n in neighbours)
+            {
+                bool neighbourInGraph = false;
+                bool edgeExists = false;
+                bool traversableFromNeighbour = false;
+                string neighbourName = (n as UnityEngine.Object)?.name ?? n.GetHashCode().ToString();
+
+                // Is this neighbour present as a source in the graph?
+                if (_pathCache != null && _pathCache.ContainsKey(n)) neighbourInGraph = true;
+
+                // Check whether the unit would consider the neighbour traversable -> target
+                try
+                {
+                    traversableFromNeighbour = _unitReference.IsCellTraversable(n, target);
+                }
+                catch { }
+
+                // Check if neighbour has an outgoing edge to target per GetGraphEdges logic
+                var edges = _unitReference.GetGraphEdges(cellManager);
+                if (edges.TryGetValue(n, out var dict))
+                {
+                    edgeExists = dict.ContainsKey(target);
+                }
+
+                UnityEngine.Debug.Log($"Neighbour '{neighbourName}': InGraphSource={neighbourInGraph}, EdgeToTarget={edgeExists}, TraversableToTarget={traversableFromNeighbour}, IsTaken={n.IsTaken}");
+            }
+
+            // Additionally, log whether any cells in the world contain edges at all (sanity)
+            var graph = _unitReference.GetGraphEdges(cellManager);
+            UnityEngine.Debug.Log($"Graph contains {graph.Count} source nodes. Target present as source: {graph.ContainsKey(target)}");
         }
 
         /// <summary>

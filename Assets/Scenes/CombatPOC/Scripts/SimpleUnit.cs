@@ -1,8 +1,13 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using TurnBasedStrategyFramework.Common.Cells;
+using TurnBasedStrategyFramework.Common.Controllers;
+using TurnBasedStrategyFramework.Common.Controllers.GridStates;
 using TurnBasedStrategyFramework.Common.Units;
+using TurnBasedStrategyFramework.Unity.Controllers;
 using TurnBasedStrategyFramework.Unity.Units;
+using TurnBasedStrategyFramework.Unity.Units.Abilities;
 using UnityEngine;
 
 namespace CombatPOC.Units
@@ -14,6 +19,9 @@ namespace CombatPOC.Units
     [RequireComponent(typeof(Collider))]
     public class SimpleUnit : Unit
     {
+        [Header("Dependencies")]
+        [SerializeField] private UnityGridController _gridController;
+        
         [Header("Visuals")]
         [SerializeField] private Renderer _renderer;
         [SerializeField] private Material _baseMaterial;
@@ -31,6 +39,7 @@ namespace CombatPOC.Units
         private void Awake()
         {
             CacheRenderer();
+            EnsureBaseAbilities();
             if (_baseMaterial != null)
             {
                 _renderer.sharedMaterial = _baseMaterial;
@@ -38,14 +47,70 @@ namespace CombatPOC.Units
             ApplyIdleColor();
         }
 
+        /// <summary>
+        /// Called after Initialize() by the framework. Wire up click handling for unit selection.
+        /// </summary>
+        private void Start()
+        {
+            if (_gridController == null)
+            {
+                _gridController = Object.FindObjectOfType<UnityGridController>();
+            }
+
+            if (_gridController != null)
+            {
+                // Subscribe to own UnitClicked event to handle selection
+                UnitClicked += OnUnitClickedHandler;
+            }
+            else
+            {
+                Debug.LogWarning($"SimpleUnit '{name}': No UnityGridController found. Unit selection will not work.", this);
+            }
+        }
+
+        private void OnDestroy()
+        {
+            // Clean up event subscription
+            UnitClicked -= OnUnitClickedHandler;
+        }
+
+        /// <summary>
+        /// Handle unit click: select this unit if it belongs to the current player, otherwise deselect.
+        /// </summary>
+        private void OnUnitClickedHandler(IUnit clickedUnit)
+        {
+            if (_gridController == null || clickedUnit != this)
+            {
+                return;
+            }
+
+            // Check if it's currently this player's turn
+            if (_gridController.TurnContext.CurrentPlayer.PlayerNumber != PlayerNumber)
+            {
+                Debug.Log($"SimpleUnit '{name}': Can't select - not our turn. Current: P{_gridController.TurnContext.CurrentPlayer.PlayerNumber}, Unit: P{PlayerNumber}");
+                return;
+            }
+
+            Debug.Log($"SimpleUnit '{name}': Selected! PlayerNumber={PlayerNumber}, BaseAbilities={GetBaseAbilities().Count()}");
+            
+            // Select this unit, passing base abilities (MoveAbility, AttackAbility) to the state
+            // This will trigger MoveAbility.Display() which highlights reachable cells
+            _gridController.GridState = new GridStateUnitSelected(this, GetBaseAbilities());
+        }
+
         private void Reset()
         {
             CacheRenderer();
+            EnsureBaseAbilities();
         }
 
         private void OnValidate()
         {
             CacheRenderer();
+            if (!Application.isPlaying)
+            {
+                EnsureBaseAbilities();
+            }
             if (_baseMaterial != null && _renderer != null && !Application.isPlaying)
             {
                 _renderer.sharedMaterial = _baseMaterial;
@@ -54,6 +119,27 @@ namespace CombatPOC.Units
             {
                 ApplyIdleColor();
             }
+        }
+
+        /// <summary>
+        /// Guarantees core Move/Attack abilities exist so selection can enumerate and display them.
+        /// Only runs in edit mode to prevent runtime duplicates.
+        /// </summary>
+        private void EnsureBaseAbilities()
+        {
+#if UNITY_EDITOR
+            if (!Application.isPlaying)
+            {
+                if (GetComponent<MoveAbility>() == null)
+                {
+                    gameObject.AddComponent<MoveAbility>();
+                }
+                if (GetComponent<AttackAbility>() == null)
+                {
+                    gameObject.AddComponent<AttackAbility>();
+                }
+            }
+#endif
         }
 
         private void CacheRenderer()
@@ -169,6 +255,14 @@ namespace CombatPOC.Units
         {
             ApplyColor(Color.black);
             return Task.CompletedTask;
+        }
+
+        public override void OnTurnStart(IGridController gridController)
+        {
+            base.OnTurnStart(gridController);
+            // Reset action and movement points at the start of each turn
+            ActionPoints = MaxActionPoints;
+            MovementPoints = MaxMovementPoints;
         }
     }
 }

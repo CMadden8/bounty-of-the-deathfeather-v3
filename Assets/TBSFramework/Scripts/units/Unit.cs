@@ -83,7 +83,7 @@ namespace TurnBasedStrategyFramework.Unity.Units
         [SerializeField] private float _movementPoints = 5;
         public float MovementPoints { get { return _movementPoints; } set { _movementPoints = value; } }
         public float MaxMovementPoints { get; set; }
-        [SerializeField] private float _movementAnimationSpeed = 1;
+        [SerializeField] private float _movementAnimationSpeed = 2f;
         public float MovementAnimationSpeed { get { return _movementAnimationSpeed; } set { _movementAnimationSpeed = value; } }
 
         [SerializeField] private int _attackRange = 1;

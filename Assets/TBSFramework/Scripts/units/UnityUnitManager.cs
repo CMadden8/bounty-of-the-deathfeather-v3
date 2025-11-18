@@ -37,7 +37,10 @@ namespace TurnBasedStrategyFramework.Unity.Units
         public void Initialize(IGridController gridController)
         {
             _units = new List<IUnit>();
-            foreach (var unit in GetComponentsInChildren<IUnit>().OrderBy(u => u.CurrentCell.GridCoordinates.x).ThenBy(u => u.CurrentCell.GridCoordinates.y))
+            // Sort units by CurrentCell coordinates, but handle null CurrentCell gracefully
+            foreach (var unit in GetComponentsInChildren<IUnit>()
+                .OrderBy(u => u.CurrentCell?.GridCoordinates.x ?? int.MaxValue)
+                .ThenBy(u => u.CurrentCell?.GridCoordinates.y ?? int.MaxValue))
             {
                 AddUnit(unit);
             }

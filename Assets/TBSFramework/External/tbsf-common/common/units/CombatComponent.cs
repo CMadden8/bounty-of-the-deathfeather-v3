@@ -34,6 +34,10 @@ namespace TurnBasedStrategyFramework.Common.Units
 
         public bool IsUnitAttackable(IUnit otherUnit, ICell otherUnitCell, ICell attackSourceCell)
         {
+            if (otherUnitCell == null || attackSourceCell == null)
+            {
+                return false;
+            }
             return otherUnitCell.GetDistance(attackSourceCell) <= _unitReference.AttackRange;
         }
 

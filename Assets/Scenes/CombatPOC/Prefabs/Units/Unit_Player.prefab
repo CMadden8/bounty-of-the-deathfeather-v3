@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 315351112067202279}
   - component: {fileID: 6372374522589571680}
   - component: {fileID: 3748339689390504053}
+  - component: {fileID: 1998103683211923295}
+  - component: {fileID: -6909682563810918206}
   m_Layer: 0
   m_Name: Unit_Player
   m_TagString: Untagged
@@ -91,7 +93,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 36c352c3bd3c25a46a0f3d620fb147eb, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -147,7 +149,9 @@ MonoBehaviour:
   _attackRange: 1
   _attackFactor: 1
   _defenceFactor: 1
+  _gridController: {fileID: 0}
   _renderer: {fileID: 6372374522589571680}
+  _baseMaterial: {fileID: 0}
   _playerColor: {r: 0.3, g: 0.7, b: 0.95, a: 1}
   _enemyColor: {r: 0.9, g: 0.35, b: 0.35, a: 1}
   _selectedColor: {r: 1, g: 0.9, b: 0.4, a: 1}
@@ -156,3 +160,29 @@ MonoBehaviour:
   _targetableColor: {r: 1, g: 0.5, b: 0.2, a: 1}
   _attackingColor: {r: 1, g: 0.2, b: 0.2, a: 1}
   _defendingColor: {r: 0.2, g: 0.4, b: 1, a: 1}
+--- !u!114 &1998103683211923295
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3188921389342170068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08c81fb425c382746b3a3d2772a086b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: com.crookedhead.tbsf.unity::TurnBasedStrategyFramework.Unity.Units.Abilities.MoveAbility
+  _withConfirmation: 0
+  _useTouchOptimizedControls: 0
+--- !u!114 &-6909682563810918206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3188921389342170068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a17e3e9f39d99d84a9bb1abd40bac637, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: com.crookedhead.tbsf.unity::TurnBasedStrategyFramework.Unity.Units.Abilities.AttackAbility

@@ -82,7 +82,12 @@ namespace TurnBasedStrategyFramework.Common.Units.Abilities
         /// <param name="gridController">The grid controller.</param>
         public void CleanUp(IGridController gridController)
         {
-            gridController.CellManager.UnMark(_cellsInMovementRange.Union(_currentPath));
+            var cellsToUnmark = _cellsInMovementRange ?? new HashSet<ICell>();
+            if (_currentPath != null)
+            {
+                cellsToUnmark = cellsToUnmark.Union(_currentPath).ToHashSet();
+            }
+            gridController.CellManager.UnMark(cellsToUnmark);
             _isConfirmed = false;
             _confirmedTarget = null;
         }
@@ -106,8 +111,20 @@ namespace TurnBasedStrategyFramework.Common.Units.Abilities
         /// <param name="gridController">The grid controller.</param>
         public void OnCellClicked(ICell cell, IGridController gridController)
         {
+            UnityEngine.Debug.Log($"MoveAbilityImpl.OnCellClicked: cell={(cell as UnityEngine.Object)?.name ?? "null"}, inRange={_cellsInMovementRange.Contains(cell)}");
+            
             if (!_cellsInMovementRange.Contains(cell))
             {
+                // Log diagnostics explaining why the clicked cell is unreachable for debugging.
+                try
+                {
+                    LogWhyCellUnreachable(cell, gridController);
+                }
+                catch (System.Exception ex)
+                {
+                    UnityEngine.Debug.LogWarning($"MoveAbilityImpl: failed to run unreachable diagnostics: {ex}");
+                }
+
                 gridController.GridState = new GridStateAwaitInput();
                 return;
             }
@@ -132,6 +149,77 @@ namespace TurnBasedStrategyFramework.Common.Units.Abilities
             }
 
             UnitReference.HumanExecuteAbility(new MoveCommand(UnitReference.CurrentCell, cell, _currentPath), gridController);
+        }
+
+        private void LogWhyCellUnreachable(ICell target, IGridController gridController)
+        {
+            var cellManager = gridController.CellManager;
+            UnitReference.CachePaths(cellManager);
+
+            // If FindPath returns any cells, check if it's affordable
+            var path = UnitReference.FindPath(target, cellManager);
+            float pathCost = 0f;
+            bool pathExists = path != null && System.Linq.Enumerable.Any(path);
+            
+            if (pathExists)
+            {
+                var prev = UnitReference.CurrentCell;
+                foreach (var step in path)
+                {
+                    pathCost += UnitReference.GetMovementCost(prev, step);
+                    prev = step;
+                }
+            }
+
+            // Log whether path exists and whether it's affordable
+            if (pathExists)
+            {
+                bool affordable = pathCost <= UnitReference.MovementPoints;
+                UnityEngine.Debug.Log($"MoveAbilityImpl: Path to '{(target as UnityEngine.Object)?.name ?? target.GetHashCode().ToString()}' EXISTS. Cost={pathCost}, MovementPoints={UnitReference.MovementPoints}, Affordable={affordable}");
+                if (affordable)
+                {
+                    UnityEngine.Debug.LogWarning("MoveAbilityImpl: Cell is affordable but not in _cellsInMovementRange - possible caching issue!");
+                    return;
+                }
+                UnityEngine.Debug.Log("MoveAbilityImpl: Cell is TOO FAR - path costs more than available movement points.");
+            }
+            else
+            {
+                UnityEngine.Debug.Log($"MoveAbilityImpl: NO PATH exists to target '{(target as UnityEngine.Object)?.name ?? target.GetHashCode().ToString()}' from unit '{(UnitReference as UnityEngine.Object)?.name ?? "unknown"}'. MovementPoints={UnitReference.MovementPoints}");
+            }
+
+            // Basic target info
+            try { UnityEngine.Debug.Log($"Target.IsTaken={target.IsTaken}, MovementCost={target.MovementCost}"); } catch {}
+
+            // Inspect neighbours to see why no edge exists to the target
+            var neighbours = target.GetNeighbours(cellManager);
+            int nCount = 0;
+            int nInGraph = 0;
+            foreach (var n in neighbours)
+            {
+                nCount++;
+                string nName = (n as UnityEngine.Object)?.name ?? n.GetHashCode().ToString();
+                string nCoords = $"({n.GridCoordinates.x}, {n.GridCoordinates.y})";
+                bool traversableToTarget = false;
+                try { traversableToTarget = UnitReference.IsCellTraversable(n, target); } catch {}
+                bool neighbourTaken = false;
+                try { neighbourTaken = n.IsTaken; } catch {}
+                
+                // Check if this neighbour is reachable from unit's current position
+                bool neighbourReachable = false;
+                if (_cellsInMovementRange != null && _cellsInMovementRange.Contains(n))
+                {
+                    neighbourReachable = true;
+                    nInGraph++;
+                }
+                
+                UnityEngine.Debug.Log($"Neighbour[{nCount}] '{nName}' at {nCoords}: IsTaken={neighbourTaken}, TraversableToTarget={traversableToTarget}, ReachableFromUnit={neighbourReachable}");
+            }
+            UnityEngine.Debug.Log($"MoveAbilityImpl: target has {nCount} neighbours, {nInGraph} are reachable from unit. TARGET COORDS: ({target.GridCoordinates.x}, {target.GridCoordinates.y})");
+
+            // Check graph edges from unit's perspective
+            var graph = UnitReference.GetGraphEdges(cellManager);
+            UnityEngine.Debug.Log($"MoveAbilityImpl: graph contains {graph.Count} source nodes. Target present as source: {graph.ContainsKey(target)}");
         }
 
         /// <summary>

@@ -125,6 +125,11 @@ namespace CombatPOC.Editor
 
             var simpleUnit = go.AddComponent<SimpleUnit>();
             simpleUnit.PlayerNumber = playerNumber;
+            simpleUnit.MovementPoints = 10f;
+            simpleUnit.MaxMovementPoints = 10f;
+            simpleUnit.ActionPoints = 2f;
+            simpleUnit.MaxActionPoints = 2f;
+            simpleUnit.MovementAnimationSpeed = 2f;
             SnapUnitToCell(simpleUnit, targetCell);
             EditorUtility.SetDirty(simpleUnit);
 
@@ -140,7 +145,22 @@ namespace CombatPOC.Editor
 
             unit.CurrentCell = cell;
             cell.IsTaken = true;
-            unit.transform.position = cell.transform.position + Vector3.up * 0.55f;
+            cell.CurrentUnits.Add(unit);
+            
+            // Position unit at cell's center
+            // Cell prefabs have root at origin and visual at (0.5, 0, 0.5)
+            // WorldPosition = transform.position (root position)
+            // Add CellDimensions/2 to get center, then add vertical offset
+            Vector3 cellCenter = cell.transform.position + new Vector3(
+                cell.CellDimensions.x * 0.5f,
+                0,
+                cell.CellDimensions.z * 0.5f
+            );
+            unit.transform.position = cellCenter + Vector3.up * 0.55f;
+            
+            // Mark both as dirty so Unity saves the changes
+            EditorUtility.SetDirty(unit);
+            EditorUtility.SetDirty(cell);
         }
     }
 }
