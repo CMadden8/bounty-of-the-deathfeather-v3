@@ -40,9 +40,9 @@ namespace CombatPOC.Editor
             }
 
             var availableCells = cellManager.GetComponentsInChildren<Cell>().ToList();
-            if (availableCells.Count < 2)
+            if (availableCells.Count < 5)
             {
-                EditorUtility.DisplayDialog("Minimal MVP Setup", "Need at least two painted cells to position units.", "OK");
+                EditorUtility.DisplayDialog("Minimal MVP Setup", "Need at least five painted cells to position the default POC units (3 heroes + 2 enemies).", "OK");
                 return;
             }
 
@@ -61,8 +61,14 @@ namespace CombatPOC.Editor
             EnsurePlayer(playerManager.transform, "Player_0", 0, typeof(HumanPlayer));
             EnsurePlayer(playerManager.transform, "Player_1", 1, typeof(HumanPlayer));
 
-            EnsureUnit(unitManager.transform, "Unit_Player", 0, availableCells[0]);
-            EnsureUnit(unitManager.transform, "Unit_Enemy", 1, availableCells[1]);
+            // Spawn three player heroes (Tharl, Bishep, Mirashala)
+            EnsureUnit(unitManager.transform, "Tharl", 0, availableCells[0]);
+            EnsureUnit(unitManager.transform, "Bishep", 0, availableCells[1]);
+            EnsureUnit(unitManager.transform, "Mirashala", 0, availableCells[2]);
+
+            // Spawn two enemy units (Groctopod, Medusa)
+            EnsureUnit(unitManager.transform, "Groctopod", 1, availableCells[3]);
+            EnsureUnit(unitManager.transform, "Medusa", 1, availableCells[4]);
 
             EditorUtility.SetDirty(controller);
             EditorUtility.SetDirty(playerManager);
@@ -109,28 +115,146 @@ namespace CombatPOC.Editor
 
         private static SimpleUnit EnsureUnit(Transform parent, string name, int playerNumber, Cell targetCell)
         {
+            // Find by name first so we can have multiple units per player
             var existing = parent.GetComponentsInChildren<SimpleUnit>(true)
-                                 .FirstOrDefault(u => u.PlayerNumber == playerNumber);
+                                 .FirstOrDefault(u => string.Equals(u.name, name, System.StringComparison.InvariantCultureIgnoreCase));
             if (existing != null)
             {
+                // Ensure player number is correct and snap to target cell
+                existing.PlayerNumber = playerNumber;
+                
+                // Re-apply templates to existing units to update stats
+                try
+                {
+                    var template = BountyOfTheDeathfeather.CombatSystem.UnitTemplates.GetTemplate(name);
+                    if (template != null)
+                    {
+                        if (template.MaxLifeHP > 0)
+                        {
+                            existing.Health = template.MaxLifeHP;
+                            existing.MaxHealth = template.MaxLifeHP;
+                        }
+                        existing.ActionPoints = template.ActionPoints;
+                        existing.MaxActionPoints = template.ActionPoints;
+                        existing.MovementPoints = template.MovementPoints;
+                        existing.MaxMovementPoints = template.MovementPoints;
+                        existing.AttackFactor = template.AttackFactor;
+                        existing.DefenceFactor = template.DefenceFactor;
+                        existing.AttackRange = template.AttackRange;
+                        
+                        // Update CombatIdentity as well
+                        var identity = existing.GetComponent<BountyOfTheDeathfeather.CombatSystem.CombatIdentity>();
+                        if (identity == null)
+                        {
+                            identity = existing.gameObject.AddComponent<BountyOfTheDeathfeather.CombatSystem.CombatIdentity>();
+                        }
+                        identity.MaxLifeHP = template.MaxLifeHP;
+                        identity.LifeHP = template.MaxLifeHP;
+                        identity.ActionPoints = template.ActionPoints;
+                        identity.MovementPoints = template.MovementPoints;
+                        identity.AttackPower = template.AttackFactor;
+                        identity.AttackRange = template.AttackRange;
+                        identity.PrimaryDamageType = BountyOfTheDeathfeather.CombatSystem.DamageType.Piercing;
+                        if (string.Equals(name, "Medusa", System.StringComparison.InvariantCultureIgnoreCase))
+                        {
+                            identity.PrimaryDamageType = BountyOfTheDeathfeather.CombatSystem.DamageType.Slashing;
+                        }
+                        var armour = template.Armour;
+                        identity.ArmourPiercing = armour.Piercing;
+                        identity.ArmourSlashing = armour.Slashing;
+                        identity.ArmourBludgeoning = armour.Bludgeoning;
+                        
+                        EditorUtility.SetDirty(identity);
+                    }
+                }
+                catch
+                {
+                    // ignore template errors
+                }
+                
                 SnapUnitToCell(existing, targetCell);
+                EditorUtility.SetDirty(existing);
                 return existing;
             }
 
             var go = GameObject.CreatePrimitive(PrimitiveType.Capsule);
             Undo.RegisterCreatedObjectUndo(go, "Create " + name);
             go.name = name;
+            // Parent under the UnitManager so created units are registered in the hierarchy
             go.transform.SetParent(parent, false);
             go.transform.localScale = Vector3.one * 0.8f;
 
             var simpleUnit = go.AddComponent<SimpleUnit>();
             simpleUnit.PlayerNumber = playerNumber;
+            // Default values (may be overridden by templates)
             simpleUnit.MovementPoints = 10f;
             simpleUnit.MaxMovementPoints = 10f;
             simpleUnit.ActionPoints = 2f;
             simpleUnit.MaxActionPoints = 2f;
             simpleUnit.MovementAnimationSpeed = 2f;
+
+            // Apply named templates for the POC cast
+            try
+            {
+                var template = BountyOfTheDeathfeather.CombatSystem.UnitTemplates.GetTemplate(name);
+                if (template != null)
+                {
+                    if (template.MaxLifeHP > 0)
+                    {
+                        simpleUnit.Health = template.MaxLifeHP;
+                        simpleUnit.MaxHealth = template.MaxLifeHP;
+                    }
+                    simpleUnit.ActionPoints = template.ActionPoints;
+                    simpleUnit.MaxActionPoints = template.ActionPoints;
+                    simpleUnit.MovementPoints = template.MovementPoints;
+                    simpleUnit.MaxMovementPoints = template.MovementPoints;
+                    simpleUnit.AttackFactor = template.AttackFactor;
+                    simpleUnit.DefenceFactor = template.DefenceFactor;
+                    simpleUnit.AttackRange = template.AttackRange;
+                }
+            }
+            catch
+            {
+                // Templates are optional; ignore failures in editor if file not present
+            }
             SnapUnitToCell(simpleUnit, targetCell);
+            // Ensure the unit GameObject is parented under the UnitManager root for visibility
+            go.transform.SetParent(parent, false);
+
+            // Attach / populate CombatIdentity with template values if available
+            try
+            {
+                var template = BountyOfTheDeathfeather.CombatSystem.UnitTemplates.GetTemplate(name);
+                var identity = go.GetComponent<BountyOfTheDeathfeather.CombatSystem.CombatIdentity>();
+                if (identity == null)
+                {
+                    identity = go.AddComponent<BountyOfTheDeathfeather.CombatSystem.CombatIdentity>();
+                }
+
+                if (template != null)
+                {
+                    identity.MaxLifeHP = template.MaxLifeHP;
+                    identity.LifeHP = template.MaxLifeHP;
+                    identity.ActionPoints = template.ActionPoints;
+                    identity.MovementPoints = template.MovementPoints;
+                    identity.AttackPower = template.AttackFactor;
+                    identity.AttackRange = template.AttackRange;
+                    // Map a naive damage type choice: heroes use Piercing by default; enemies may vary
+                    identity.PrimaryDamageType = BountyOfTheDeathfeather.CombatSystem.DamageType.Piercing;
+                    if (string.Equals(name, "Medusa", System.StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        identity.PrimaryDamageType = BountyOfTheDeathfeather.CombatSystem.DamageType.Slashing;
+                    }
+                    var armour = template.Armour;
+                    identity.ArmourPiercing = armour.Piercing;
+                    identity.ArmourSlashing = armour.Slashing;
+                    identity.ArmourBludgeoning = armour.Bludgeoning;
+                }
+            }
+            catch
+            {
+                // ignore
+            }
             EditorUtility.SetDirty(simpleUnit);
 
             return simpleUnit;

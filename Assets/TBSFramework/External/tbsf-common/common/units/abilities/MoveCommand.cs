@@ -57,9 +57,13 @@ namespace TurnBasedStrategyFramework.Common.Units.Abilities
             unit.CurrentCell = _destination;
             unit.CurrentCell.CurrentUnits.Add(unit);
 
+            // Decrement MovementPoints by path cost (traditional TBS behavior)
             var pathCost = _path.Sum(c => c.MovementCost);
             unit.MovementPoints -= pathCost;
-            unit.ActionPoints -= 1;
+            
+            // Do NOT decrement ActionPoints on movement - only on actions/abilities
+            // This allows: move → move → move → attack (consuming 1 AP for attack only)
+            // unit.ActionPoints -= 1;
 
             await controller.UnitManager.MarkAsMoving(unit, _source, _destination, _path);
             await unit.MovementAnimation(_path, _destination);

@@ -115,6 +115,7 @@ Mirashala, Bishep and Tharl are the main player characters. They are the only ma
 - Life: 3
 - Armour: Piercing 1, Slashing 3, Bludgeoning 1
 - Attack: Piercing 1, range 4
+- Movement: 4
 - AP: 2
 - Gear:
   - Health Potion x1 — heals 2 Life HP (can only target self)
@@ -193,6 +194,7 @@ Mirashala, Bishep and Tharl are the main player characters. They are the only ma
 - Life: 3
 - Armour: Piercing 2, Slashing 1, Bludgeoning 3
 - AP: 2
+- Movement: 5
 - Attack: Piercing 1, range 4
 - Gear:
   - Health Potion x1 — heals 2 Life HP (can only target self)
@@ -243,7 +245,7 @@ Mirashala, Bishep and Tharl are the main player characters. They are the only ma
 
         - Level 1: movement 3, armour 1/1/1, damage 1 Piercing on detonation.
         - Level 2: movement 4, armour 1/1/1, damage 2 Piercing on detonation.
-        - Level 3: movement 6, armour 1/1/1, damage 3 Piercing on detonation. Detonates using Spore Eruption radius if unlocked.
+        - Level 3: movement 5, armour 1/1/1, damage 3 Piercing on detonation. Detonates using Spore Eruption radius if unlocked.
   
   - **Root Ram** (unlock cost: 2 AUP): summons a durable ram unit (no Life HP, armour pools: Piercing 1, Slashing 1, Bludgeoning 2) with movement 4 and a headbutt attack (2 Bludgeoning, range 1). The ram has 1 AP for its abilities (if any are available).
     
@@ -271,6 +273,7 @@ Mirashala, Bishep and Tharl are the main player characters. They are the only ma
 - Life: 4
 - Armour: Piercing 2, Slashing 2, Bludgeoning 2
 - AP: 2
+- Movement: 4
 - Attack types (player-selectable per attack):
   - Mace: 1 Bludgeoning, range 1
   - Sword: 1 Slashing, range 1
@@ -379,6 +382,7 @@ General enemy AI uses the API and script format used by the TBSF for enemy AI. H
 
 - Life: 2
 - Armour: Piercing 2, Slashing 2, Bludgeoning 1
+- Movement: 4
 - AP: 2
 - Attack: 1 Slashing, range 1
 
@@ -396,6 +400,7 @@ Groctopod Grabber AI:
 
 - Life: 2
 - Armour: Piercing 2, Slashing 2, Bludgeoning 2
+- Movement: 4
 - AP: 2
 - Attack: 1 Slashing, range 1
 
