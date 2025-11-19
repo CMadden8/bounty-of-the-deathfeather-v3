@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &209489273568510666
+--- !u!1 &1705166100590617000
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,77 +8,138 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4124718230450335628}
+  - component: {fileID: 8571138513573070730}
+  - component: {fileID: 3349828698451738549}
+  - component: {fileID: 2154188862385303162}
+  - component: {fileID: 2916896975013729973}
+  - component: {fileID: 2193643632355342600}
   m_Layer: 0
-  m_Name: Highlighters
+  m_Name: UnMark
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4124718230450335628
+--- !u!4 &8571138513573070730
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 209489273568510666}
+  m_GameObject: {fileID: 1705166100590617000}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 9160143302345957421}
-  - {fileID: 3793874264906099911}
-  - {fileID: 6354526715511880943}
-  - {fileID: 893975277506904678}
-  m_Father: {fileID: 704822348158141527}
+  m_Children: []
+  m_Father: {fileID: 4841711072924655491}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1404006163396640060
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 704822348158141527}
-  - component: {fileID: 503025268410558523}
-  m_Layer: 0
-  m_Name: SimpleCubeCell_Gray
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &704822348158141527
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1404006163396640060}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 8091177941331089975}
-  - {fileID: 4124718230450335628}
-  - {fileID: 6288263381446866111}
-  - {fileID: 7445381957926991858}
-  - {fileID: 1101796085207874059}
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &503025268410558523
+--- !u!114 &3349828698451738549
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1404006163396640060}
+  m_GameObject: {fileID: 1705166100590617000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2327bf6bbaed60441b8d45b2e188697f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: com.crookedhead.tbsf.unity::TurnBasedStrategyFramework.Unity.Highlighters.CompoundHighlighter
+  _highlighters:
+  - {fileID: 2154188862385303162}
+  - {fileID: 2916896975013729973}
+  - {fileID: 2193643632355342600}
+--- !u!114 &2154188862385303162
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1705166100590617000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cd5294cc56244f49806072be5edc497, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: com.crookedhead.tbsf.unity::TurnBasedStrategyFramework.Unity.Highlighters.GameObjectActivatorHighlighter
+  _activationStatus: 0
+  _target: {fileID: 6290067220001880774}
+  _delay: 0
+--- !u!114 &2916896975013729973
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1705166100590617000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cd5294cc56244f49806072be5edc497, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: com.crookedhead.tbsf.unity::TurnBasedStrategyFramework.Unity.Highlighters.GameObjectActivatorHighlighter
+  _activationStatus: 0
+  _target: {fileID: 3333853055770763833}
+  _delay: 0
+--- !u!114 &2193643632355342600
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1705166100590617000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cd5294cc56244f49806072be5edc497, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: com.crookedhead.tbsf.unity::TurnBasedStrategyFramework.Unity.Highlighters.GameObjectActivatorHighlighter
+  _activationStatus: 0
+  _target: {fileID: 9061392839901524449}
+  _delay: 0
+--- !u!1 &2377820128284387602
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1501153757986452338}
+  - component: {fileID: 8039745822999919715}
+  m_Layer: 0
+  m_Name: SimpleCubeCell_Blue
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1501153757986452338
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2377820128284387602}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 883567043675594308}
+  - {fileID: 4841711072924655491}
+  - {fileID: 1076545741579684660}
+  - {fileID: 6080278521622260070}
+  - {fileID: 1369408143049501106}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8039745822999919715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2377820128284387602}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fb3367966872e5641980a4d4e25d46f5, type: 3}
@@ -87,23 +148,23 @@ MonoBehaviour:
   _gridCoordinates: {x: 0, y: 0}
   _isTaken: 0
   _unMarkFn:
-  - {fileID: 4941377397036457894}
-  - {fileID: 3266029099031559105}
-  - {fileID: 1149739798881006006}
-  - {fileID: 6857577739081382345}
+  - {fileID: 3349828698451738549}
+  - {fileID: 2154188862385303162}
+  - {fileID: 2916896975013729973}
+  - {fileID: 2193643632355342600}
   _markAsHighlightedFn:
-  - {fileID: 5755241336792318476}
-  - {fileID: 5989318994961900159}
+  - {fileID: 869784149112774747}
+  - {fileID: 7608207914201975259}
   _markAsReachableFn:
-  - {fileID: 2241840302065867501}
-  - {fileID: 6798906589403768811}
+  - {fileID: 5395849562124142891}
+  - {fileID: 3416394769399824851}
   _markAsPathFn:
-  - {fileID: 2445739203884034360}
-  - {fileID: 476615871302348443}
+  - {fileID: 924449281391804}
+  - {fileID: 3902832037229595309}
   _movementCost: 1
   _currentUnits: []
   <CellDimensions>k__BackingField: {x: 1, y: 1, z: 1}
---- !u!1 &2147066235580634386
+--- !u!1 &2441246478324390219
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -111,9 +172,133 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7445381957926991858}
-  - component: {fileID: 4725586371396720289}
-  - component: {fileID: 275483493994133992}
+  - component: {fileID: 5209779439302309108}
+  - component: {fileID: 869784149112774747}
+  - component: {fileID: 7608207914201975259}
+  m_Layer: 0
+  m_Name: MarkAsHighlighted
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5209779439302309108
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2441246478324390219}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4841711072924655491}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &869784149112774747
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2441246478324390219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2327bf6bbaed60441b8d45b2e188697f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: com.crookedhead.tbsf.unity::TurnBasedStrategyFramework.Unity.Highlighters.CompoundHighlighter
+  _highlighters:
+  - {fileID: 7608207914201975259}
+--- !u!114 &7608207914201975259
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2441246478324390219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cd5294cc56244f49806072be5edc497, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: com.crookedhead.tbsf.unity::TurnBasedStrategyFramework.Unity.Highlighters.GameObjectActivatorHighlighter
+  _activationStatus: 1
+  _target: {fileID: 6290067220001880774}
+  _delay: 0
+--- !u!1 &3106724677804250018
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2621671700790563843}
+  - component: {fileID: 5395849562124142891}
+  - component: {fileID: 3416394769399824851}
+  m_Layer: 0
+  m_Name: MarkAsReachable
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2621671700790563843
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3106724677804250018}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4841711072924655491}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5395849562124142891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3106724677804250018}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2327bf6bbaed60441b8d45b2e188697f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: com.crookedhead.tbsf.unity::TurnBasedStrategyFramework.Unity.Highlighters.CompoundHighlighter
+  _highlighters:
+  - {fileID: 3416394769399824851}
+--- !u!114 &3416394769399824851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3106724677804250018}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cd5294cc56244f49806072be5edc497, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: com.crookedhead.tbsf.unity::TurnBasedStrategyFramework.Unity.Highlighters.GameObjectActivatorHighlighter
+  _activationStatus: 1
+  _target: {fileID: 3333853055770763833}
+  _delay: 0
+--- !u!1 &3333853055770763833
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6080278521622260070}
+  - component: {fileID: 5169358831907906140}
+  - component: {fileID: 4841402021339966501}
   m_Layer: 0
   m_Name: ReachableOverlay
   m_TagString: Untagged
@@ -121,36 +306,36 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!4 &7445381957926991858
+--- !u!4 &6080278521622260070
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2147066235580634386}
+  m_GameObject: {fileID: 3333853055770763833}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.5, y: 0.055, z: 0.5}
   m_LocalScale: {x: 0.9, y: 0.01, z: 0.9}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 704822348158141527}
+  m_Father: {fileID: 1501153757986452338}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &4725586371396720289
+--- !u!33 &5169358831907906140
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2147066235580634386}
+  m_GameObject: {fileID: 3333853055770763833}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &275483493994133992
+--- !u!23 &4841402021339966501
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2147066235580634386}
+  m_GameObject: {fileID: 3333853055770763833}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -192,7 +377,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &2694432380331660486
+--- !u!1 &3655648033177361278
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -200,61 +385,34 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 6354526715511880943}
-  - component: {fileID: 2241840302065867501}
-  - component: {fileID: 6798906589403768811}
+  - component: {fileID: 4841711072924655491}
   m_Layer: 0
-  m_Name: MarkAsReachable
+  m_Name: Highlighters
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &6354526715511880943
+--- !u!4 &4841711072924655491
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2694432380331660486}
+  m_GameObject: {fileID: 3655648033177361278}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 4124718230450335628}
+  m_Children:
+  - {fileID: 8571138513573070730}
+  - {fileID: 5209779439302309108}
+  - {fileID: 2621671700790563843}
+  - {fileID: 4786602164002170377}
+  m_Father: {fileID: 1501153757986452338}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2241840302065867501
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2694432380331660486}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2327bf6bbaed60441b8d45b2e188697f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: com.crookedhead.tbsf.unity::TurnBasedStrategyFramework.Unity.Highlighters.CompoundHighlighter
-  _highlighters:
-  - {fileID: 6798906589403768811}
---- !u!114 &6798906589403768811
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2694432380331660486}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9cd5294cc56244f49806072be5edc497, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: com.crookedhead.tbsf.unity::TurnBasedStrategyFramework.Unity.Highlighters.GameObjectActivatorHighlighter
-  _activationStatus: 1
-  _target: {fileID: 2147066235580634386}
-  _delay: 0
---- !u!1 &2860384751346115822
+--- !u!1 &6290067220001880774
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -262,216 +420,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8091177941331089975}
-  - component: {fileID: 5262070310733342283}
-  - component: {fileID: 6596827783971098383}
-  - component: {fileID: 8715706316235774044}
-  m_Layer: 0
-  m_Name: model
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8091177941331089975
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2860384751346115822}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.5, y: 0, z: 0.5}
-  m_LocalScale: {x: 0.9, y: 0.1, z: 0.9}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 704822348158141527}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &5262070310733342283
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2860384751346115822}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!65 &6596827783971098383
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2860384751346115822}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!23 &8715706316235774044
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2860384751346115822}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_ForceMeshLod: -1
-  m_MeshLodSelectionBias: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 1a878733f6f49e644b54e6693890644b, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 1
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &4337619745034411891
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 9160143302345957421}
-  - component: {fileID: 4941377397036457894}
-  - component: {fileID: 3266029099031559105}
-  - component: {fileID: 1149739798881006006}
-  - component: {fileID: 6857577739081382345}
-  m_Layer: 0
-  m_Name: UnMark
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &9160143302345957421
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4337619745034411891}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 4124718230450335628}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4941377397036457894
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4337619745034411891}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2327bf6bbaed60441b8d45b2e188697f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: com.crookedhead.tbsf.unity::TurnBasedStrategyFramework.Unity.Highlighters.CompoundHighlighter
-  _highlighters:
-  - {fileID: 3266029099031559105}
-  - {fileID: 1149739798881006006}
-  - {fileID: 6857577739081382345}
---- !u!114 &3266029099031559105
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4337619745034411891}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9cd5294cc56244f49806072be5edc497, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: com.crookedhead.tbsf.unity::TurnBasedStrategyFramework.Unity.Highlighters.GameObjectActivatorHighlighter
-  _activationStatus: 0
-  _target: {fileID: 4468698249528178544}
-  _delay: 0
---- !u!114 &1149739798881006006
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4337619745034411891}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9cd5294cc56244f49806072be5edc497, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: com.crookedhead.tbsf.unity::TurnBasedStrategyFramework.Unity.Highlighters.GameObjectActivatorHighlighter
-  _activationStatus: 0
-  _target: {fileID: 2147066235580634386}
-  _delay: 0
---- !u!114 &6857577739081382345
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4337619745034411891}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9cd5294cc56244f49806072be5edc497, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: com.crookedhead.tbsf.unity::TurnBasedStrategyFramework.Unity.Highlighters.GameObjectActivatorHighlighter
-  _activationStatus: 0
-  _target: {fileID: 6759572685115143373}
-  _delay: 0
---- !u!1 &4468698249528178544
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6288263381446866111}
-  - component: {fileID: 1129736038477948034}
-  - component: {fileID: 859827866102361197}
+  - component: {fileID: 1076545741579684660}
+  - component: {fileID: 7956906886087219174}
+  - component: {fileID: 4839324237821317179}
   m_Layer: 0
   m_Name: HoverOverlay
   m_TagString: Untagged
@@ -479,36 +430,36 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!4 &6288263381446866111
+--- !u!4 &1076545741579684660
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4468698249528178544}
+  m_GameObject: {fileID: 6290067220001880774}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.5, y: 0.055, z: 0.5}
   m_LocalScale: {x: 0.9, y: 0.01, z: 0.9}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 704822348158141527}
+  m_Father: {fileID: 1501153757986452338}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &1129736038477948034
+--- !u!33 &7956906886087219174
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4468698249528178544}
+  m_GameObject: {fileID: 6290067220001880774}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &859827866102361197
+--- !u!23 &4839324237821317179
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4468698249528178544}
+  m_GameObject: {fileID: 6290067220001880774}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -550,7 +501,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &6759572685115143373
+--- !u!1 &7454785933295433627
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -558,9 +509,182 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1101796085207874059}
-  - component: {fileID: 1928373229689250933}
-  - component: {fileID: 1979981589693158597}
+  - component: {fileID: 4786602164002170377}
+  - component: {fileID: 924449281391804}
+  - component: {fileID: 3902832037229595309}
+  m_Layer: 0
+  m_Name: MarkAsPath
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4786602164002170377
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7454785933295433627}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4841711072924655491}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &924449281391804
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7454785933295433627}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2327bf6bbaed60441b8d45b2e188697f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: com.crookedhead.tbsf.unity::TurnBasedStrategyFramework.Unity.Highlighters.CompoundHighlighter
+  _highlighters:
+  - {fileID: 3902832037229595309}
+--- !u!114 &3902832037229595309
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7454785933295433627}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cd5294cc56244f49806072be5edc497, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: com.crookedhead.tbsf.unity::TurnBasedStrategyFramework.Unity.Highlighters.GameObjectActivatorHighlighter
+  _activationStatus: 1
+  _target: {fileID: 9061392839901524449}
+  _delay: 0
+--- !u!1 &8459053374790756356
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 883567043675594308}
+  - component: {fileID: 3202732911014547935}
+  - component: {fileID: 815990375141290364}
+  - component: {fileID: 9045166628981072422}
+  m_Layer: 0
+  m_Name: model
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &883567043675594308
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8459053374790756356}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.5, y: 0, z: 0.5}
+  m_LocalScale: {x: 0.9, y: 0.1, z: 0.9}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1501153757986452338}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &3202732911014547935
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8459053374790756356}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!65 &815990375141290364
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8459053374790756356}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &9045166628981072422
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8459053374790756356}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 36c352c3bd3c25a46a0f3d620fb147eb, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 1
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &9061392839901524449
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1369408143049501106}
+  - component: {fileID: 2810549747554598690}
+  - component: {fileID: 2701956388420278689}
   m_Layer: 0
   m_Name: PathOverlay
   m_TagString: Untagged
@@ -568,36 +692,36 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!4 &1101796085207874059
+--- !u!4 &1369408143049501106
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6759572685115143373}
+  m_GameObject: {fileID: 9061392839901524449}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.5, y: 0.055, z: 0.5}
   m_LocalScale: {x: 0.9, y: 0.01, z: 0.9}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 704822348158141527}
+  m_Father: {fileID: 1501153757986452338}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &1928373229689250933
+--- !u!33 &2810549747554598690
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6759572685115143373}
+  m_GameObject: {fileID: 9061392839901524449}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &1979981589693158597
+--- !u!23 &2701956388420278689
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6759572685115143373}
+  m_GameObject: {fileID: 9061392839901524449}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -639,127 +763,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &6776887925112549187
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 893975277506904678}
-  - component: {fileID: 2445739203884034360}
-  - component: {fileID: 476615871302348443}
-  m_Layer: 0
-  m_Name: MarkAsPath
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &893975277506904678
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6776887925112549187}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 4124718230450335628}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2445739203884034360
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6776887925112549187}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2327bf6bbaed60441b8d45b2e188697f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: com.crookedhead.tbsf.unity::TurnBasedStrategyFramework.Unity.Highlighters.CompoundHighlighter
-  _highlighters:
-  - {fileID: 476615871302348443}
---- !u!114 &476615871302348443
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6776887925112549187}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9cd5294cc56244f49806072be5edc497, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: com.crookedhead.tbsf.unity::TurnBasedStrategyFramework.Unity.Highlighters.GameObjectActivatorHighlighter
-  _activationStatus: 1
-  _target: {fileID: 6759572685115143373}
-  _delay: 0
---- !u!1 &8551602990076142380
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3793874264906099911}
-  - component: {fileID: 5755241336792318476}
-  - component: {fileID: 5989318994961900159}
-  m_Layer: 0
-  m_Name: MarkAsHighlighted
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &3793874264906099911
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8551602990076142380}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 4124718230450335628}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5755241336792318476
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8551602990076142380}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2327bf6bbaed60441b8d45b2e188697f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: com.crookedhead.tbsf.unity::TurnBasedStrategyFramework.Unity.Highlighters.CompoundHighlighter
-  _highlighters:
-  - {fileID: 5989318994961900159}
---- !u!114 &5989318994961900159
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8551602990076142380}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9cd5294cc56244f49806072be5edc497, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: com.crookedhead.tbsf.unity::TurnBasedStrategyFramework.Unity.Highlighters.GameObjectActivatorHighlighter
-  _activationStatus: 1
-  _target: {fileID: 4468698249528178544}
-  _delay: 0

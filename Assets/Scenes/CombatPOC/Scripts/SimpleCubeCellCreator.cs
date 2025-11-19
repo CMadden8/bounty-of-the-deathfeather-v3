@@ -162,6 +162,7 @@ namespace CombatPOC.Editor
         /// <summary>
         /// Creates highlighter GameObjects for cell visual feedback.
         /// Cells need these to show reachable/path/selected states.
+        /// NOTE: Now uses GameObjectActivator for transparent overlays (like Clash of Heroes example)
         /// </summary>
         private static void CreateHighlighters(GameObject cellObj, Square square, Color baseColor, MeshRenderer renderer)
         {
@@ -169,19 +170,23 @@ namespace CombatPOC.Editor
             GameObject highlightersContainer = new GameObject("Highlighters");
             highlightersContainer.transform.SetParent(cellObj.transform, false);
             
-            // renderer passed in references the visual child's MeshRenderer
+            // Create transparent overlay objects (these will be toggled on/off)
+            GameObject hoverOverlay = CreateTransparentOverlay(cellObj, "HoverOverlay", new Color(0.7f, 0.85f, 1f, 0.4f));
+            GameObject reachableOverlay = CreateTransparentOverlay(cellObj, "ReachableOverlay", new Color(0.2f, 0.5f, 1f, 0.6f)); // BRIGHT BLUE for testing
+            GameObject pathOverlay = CreateTransparentOverlay(cellObj, "PathOverlay", new Color(0.5f, 1f, 0.5f, 0.5f));
             
-            // UnMark - restore to the cell's base material color (not white, preserves the cell color)
-            GameObject unMarkObj = CreateRendererHighlighter("UnMark", highlightersContainer, renderer, baseColor);
+            // Create highlighters using GameObjectActivator (toggles overlays on/off)
+            GameObject unMarkObj = CreateGameObjectActivatorHighlighter("UnMark", highlightersContainer, 
+                new GameObject[] { hoverOverlay, reachableOverlay, pathOverlay }, false);
             
-            // MarkAsHighlighted - for mouse hover (blue with 5% opacity - virtually invisible for testing)
-            GameObject highlightedObj = CreateRendererHighlighter("MarkAsHighlighted", highlightersContainer, renderer, new Color(0.5f, 0.7f, 1f, 0.05f));
+            GameObject highlightedObj = CreateGameObjectActivatorHighlighter("MarkAsHighlighted", highlightersContainer, 
+                new GameObject[] { hoverOverlay }, true);
             
-            // MarkAsReachable - for movement range (yellow with 5% opacity - virtually invisible for testing)
-            GameObject reachableObj = CreateRendererHighlighter("MarkAsReachable", highlightersContainer, renderer, new Color(1f, 0.9f, 0.4f, 0.05f));
+            GameObject reachableObj = CreateGameObjectActivatorHighlighter("MarkAsReachable", highlightersContainer, 
+                new GameObject[] { reachableOverlay }, true);
             
-            // MarkAsPath - for movement path (green with 5% opacity - virtually invisible for testing)
-            GameObject pathObj = CreateRendererHighlighter("MarkAsPath", highlightersContainer, renderer, new Color(0.3f, 1f, 0.3f, 0.05f));
+            GameObject pathObj = CreateGameObjectActivatorHighlighter("MarkAsPath", highlightersContainer, 
+                new GameObject[] { pathOverlay }, true);
             
             // Assign highlighters to Square component via reflection (fields are serialized)
             var squareType = typeof(Square);
@@ -191,6 +196,112 @@ namespace CombatPOC.Editor
             AssignHighlighterField(baseType, square, "_markAsHighlightedFn", highlightedObj);
             AssignHighlighterField(baseType, square, "_markAsReachableFn", reachableObj);
             AssignHighlighterField(baseType, square, "_markAsPathFn", pathObj);
+        }
+        
+        /// <summary>
+        /// Creates a transparent overlay quad that sits above the tile.
+        /// This is toggled on/off by GameObjectActivatorHighlighter.
+        /// </summary>
+        private static GameObject CreateTransparentOverlay(GameObject cellObj, string name, Color color)
+        {
+            GameObject overlay = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            overlay.name = name;
+            overlay.transform.SetParent(cellObj.transform, false);
+            
+            // Position slightly above tile surface
+            overlay.transform.localPosition = new Vector3(0.5f, 0.055f, 0.5f);
+            overlay.transform.localScale = new Vector3(0.9f, 0.01f, 0.9f); // Thin overlay
+            
+            // Remove collider so it doesn't interfere with raycasts
+            Object.DestroyImmediate(overlay.GetComponent<Collider>());
+            
+            // Create or reuse an overlay material asset so colors/alpha can be adjusted in-editor
+            var overlayMat = GetOrCreateOverlayMaterial(name + "_Mat", color);
+            overlay.GetComponent<MeshRenderer>().sharedMaterial = overlayMat;
+            
+            // Start inactive (will be activated by highlighter)
+            overlay.SetActive(false);
+            
+            return overlay;
+        }
+
+        /// <summary>
+        /// Load or create a transparent overlay material asset at a known location so artists can tweak it.
+        /// </summary>
+        private static Material GetOrCreateOverlayMaterial(string assetName, Color color)
+        {
+            string dir = "Assets/Scenes/CombatPOC/Prefabs/Materials/Overlays";
+            if (!System.IO.Directory.Exists(dir))
+            {
+                System.IO.Directory.CreateDirectory(dir);
+            }
+            string path = System.IO.Path.Combine(dir, assetName + ".mat").Replace("\\", "/");
+            var mat = AssetDatabase.LoadAssetAtPath<Material>(path);
+            if (mat == null)
+            {
+                Shader shader = Shader.Find("Standard");
+                mat = new Material(shader ?? Shader.Find("Standard"));
+                // Configure transparent blending for Standard shader
+                if (mat.shader != null && mat.shader.name == "Standard")
+                {
+                    mat.SetFloat("_Mode", 3);
+                    mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+                    mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+                    mat.SetInt("_ZWrite", 0);
+                    mat.DisableKeyword("_ALPHATEST_ON");
+                    mat.EnableKeyword("_ALPHABLEND_ON");
+                    mat.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+                    mat.renderQueue = 3000;
+                }
+                mat.color = color;
+                AssetDatabase.CreateAsset(mat, path);
+                AssetDatabase.SaveAssets();
+            }
+            else
+            {
+                // Update color so repeated prefab creation picks up the requested tint
+                mat.color = color;
+                EditorUtility.SetDirty(mat);
+                AssetDatabase.SaveAssets();
+            }
+
+            return mat;
+        }
+        
+        /// <summary>
+        /// Creates a highlighter that activates/deactivates GameObjects (for transparent overlays).
+        /// This is how Clash of Heroes achieves transparent highlighting!
+        /// </summary>
+        private static GameObject CreateGameObjectActivatorHighlighter(string name, GameObject parent, GameObject[] targets, bool activationStatus)
+        {
+            GameObject obj = new GameObject(name);
+            obj.transform.SetParent(parent.transform, false);
+            
+            // Use CompoundHighlighter to activate multiple overlays at once
+            var compound = obj.AddComponent<TurnBasedStrategyFramework.Unity.Highlighters.CompoundHighlighter>();
+            var highlighters = new System.Collections.Generic.List<TurnBasedStrategyFramework.Unity.Highlighters.Highlighter>();
+            
+            foreach (var target in targets)
+            {
+                var activator = obj.AddComponent<TurnBasedStrategyFramework.Unity.Highlighters.GameObjectActivatorHighlighter>();
+                
+                // Set fields via reflection
+                var activatorType = activator.GetType();
+                var statusField = activatorType.GetField("_activationStatus", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+                var targetField = activatorType.GetField("_target", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+                
+                if (statusField != null) statusField.SetValue(activator, activationStatus);
+                if (targetField != null) targetField.SetValue(activator, target);
+                
+                highlighters.Add(activator);
+            }
+            
+            // Assign highlighters to compound
+            var compoundType = compound.GetType();
+            var highlightersField = compoundType.GetField("_highlighters", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+            if (highlightersField != null) highlightersField.SetValue(compound, highlighters);
+            
+            return obj;
         }
         
         private static GameObject CreateRendererHighlighter(string name, GameObject parent, MeshRenderer targetRenderer, Color color)
@@ -214,12 +325,37 @@ namespace CombatPOC.Editor
         private static void AssignHighlighterField(System.Type cellType, Square square, string fieldName, GameObject highlighterObj)
         {
             var field = cellType.GetField(fieldName, System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
-            if (field != null)
+            if (field == null) return;
+
+            // Collect all Highlighter-derived components on the highlighter object and its children
+            System.Type highlighterBase = typeof(TurnBasedStrategyFramework.Unity.Highlighters.Highlighter);
+            var compObjs = highlighterObj.GetComponentsInChildren(highlighterBase, true);
+            var highlighterList = new System.Collections.Generic.List<TurnBasedStrategyFramework.Unity.Highlighters.Highlighter>();
+            foreach (var c in compObjs)
             {
-                var highlighter = highlighterObj.GetComponent<TurnBasedStrategyFramework.Unity.Highlighters.RendererHighlighter>();
-                // The field is a List<Highlighter> where Highlighter is the Unity.Highlighters base class
-                var list = new System.Collections.Generic.List<TurnBasedStrategyFramework.Unity.Highlighters.Highlighter> { highlighter };
-                field.SetValue(square, list);
+                if (c is TurnBasedStrategyFramework.Unity.Highlighters.Highlighter h)
+                {
+                    highlighterList.Add(h);
+                }
+            }
+
+            // Use SerializedObject to write the references so they are persisted into the prefab asset
+            var so = new SerializedObject(square);
+            var prop = so.FindProperty(fieldName);
+            if (prop != null && prop.isArray)
+            {
+                prop.ClearArray();
+                prop.arraySize = highlighterList.Count;
+                for (int i = 0; i < highlighterList.Count; i++)
+                {
+                    prop.GetArrayElementAtIndex(i).objectReferenceValue = highlighterList[i];
+                }
+                so.ApplyModifiedProperties();
+            }
+            else
+            {
+                // Fallback: set via reflection (non-serialized field)
+                field.SetValue(square, highlighterList);
             }
         }
     }
