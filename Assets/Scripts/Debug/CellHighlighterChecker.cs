@@ -35,7 +35,15 @@ namespace BountyOfTheDeathfeather.Debugging
                 return;
             }
 
-            var cells = cellManager.GetCells().ToList();
+            // Note: GetCells() may return null during early initialization
+            var cellsEnumerable = cellManager.GetCells();
+            if (cellsEnumerable == null)
+            {
+                Debug.Log("CellHighlighterChecker: GetCells() returned null (grid may not be initialized yet). Skipping check.");
+                return;
+            }
+
+            var cells = cellsEnumerable.ToList();
             int missingReachable = 0;
             int missingPath = 0;
 

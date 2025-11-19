@@ -108,9 +108,11 @@ namespace TurnBasedStrategyFramework.Unity.Cells
         }
 
         /// <summary>
-        /// Changes the color of the cell to given value. Used for AI debugging.
+        /// Changes the color of the cell to given value. Used for AI debugging and attack range highlighting.
         /// </summary>
         public virtual void SetColor(float r, float g, float b, float a) { }
+
+
 
         public virtual bool Equals(ICell other)
         {

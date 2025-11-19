@@ -270,6 +270,15 @@ namespace CombatPOC.Units
             // Reset action and movement points at the start of each turn
             ActionPoints = MaxActionPoints;
             MovementPoints = MaxMovementPoints;
+            
+            // Sync with CombatIdentity if present
+            var identity = GetComponent<BountyOfTheDeathfeather.CombatSystem.CombatIdentity>();
+            if (identity != null)
+            {
+                identity.ActionPoints = (int)ActionPoints;
+                identity.MovementPoints = (int)MovementPoints;
+                identity.GearPoints = identity.MaxGearPoints; // Reset GP as well
+            }
         }
     }
 }

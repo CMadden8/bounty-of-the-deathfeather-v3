@@ -72,18 +72,25 @@ namespace BountyOfTheDeathfeather.CombatSystem.Abilities
 
         public override bool CanPerform(IGridController gridController)
         {
+            // Per COMBAT_MECHANICS.md: abilities consume AP but don't end turn if MP remains
+            // Return true if unit has MP > 0 to prevent auto-ending turn when AP exhausted
+            
             if (UnitReference.ActionPoints < ActionCost)
             {
-                return false;
+                // No AP for ability, but if MP > 0, unit can still move (return true to prevent auto-finish)
+                return UnitReference.MovementPoints > 0;
             }
 
             var enemyUnits = gridController.UnitManager.GetEnemyUnits(
                 gridController.PlayerManager.GetPlayerByNumber(UnitReference.PlayerNumber));
 
-            return enemyUnits.Any(enemy =>
+            bool hasEnemiesInRange = enemyUnits.Any(enemy =>
                 enemy.CurrentCell != null &&
                 UnitReference.CurrentCell != null &&
                 enemy.CurrentCell.GetDistance(UnitReference.CurrentCell) <= AbilityRange);
+            
+            // Return true if enemies in range OR if MP > 0 (allow movement)
+            return hasEnemiesInRange || UnitReference.MovementPoints > 0;
         }
     }
 }

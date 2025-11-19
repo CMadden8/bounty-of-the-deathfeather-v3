@@ -43,7 +43,7 @@ namespace BountyOfTheDeathfeather.CombatSystem
         public static Template Tharl() => new Template
         {
             MaxLifeHP = 3,
-            ActionPoints = 2,
+            ActionPoints = 1,
             MovementPoints = 5,
             AttackRange = 4,
             AttackFactor = 1,
@@ -55,7 +55,7 @@ namespace BountyOfTheDeathfeather.CombatSystem
         public static Template Bishep() => new Template
         {
             MaxLifeHP = 4,
-            ActionPoints = 2,
+            ActionPoints = 1,
             MovementPoints = 4,
             AttackRange = 1,
             AttackFactor = 1,
@@ -67,7 +67,7 @@ namespace BountyOfTheDeathfeather.CombatSystem
         public static Template Mirashala() => new Template
         {
             MaxLifeHP = 3,
-            ActionPoints = 2,
+            ActionPoints = 1,
             MovementPoints = 4,
             AttackRange = 4,
             AttackFactor = 1,
@@ -79,7 +79,7 @@ namespace BountyOfTheDeathfeather.CombatSystem
         public static Template Groctopod() => new Template
         {
             MaxLifeHP = 2,
-            ActionPoints = 2,
+            ActionPoints = 1,
             MovementPoints = 4,
             AttackRange = 1,
             AttackFactor = 1,
@@ -91,7 +91,7 @@ namespace BountyOfTheDeathfeather.CombatSystem
         public static Template Medusa() => new Template
         {
             MaxLifeHP = 2,
-            ActionPoints = 2,
+            ActionPoints = 1,
             MovementPoints = 4,
             AttackRange = 1,
             AttackFactor = 1,

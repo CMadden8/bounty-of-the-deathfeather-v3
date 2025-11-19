@@ -29,6 +29,20 @@ namespace BountyOfTheDeathfeather.CombatSystem
         public int ActionPoints = 2;
         public int MovementPoints = 5;
 
+        [Header("Talent Points (TP)")]
+        [Tooltip("Per-combat resource for unlocking abilities. Resets at end of battle.")]
+        public int TalentPoints = 2;
+        public int MaxTalentPoints = 2;
+
+        [Header("Gear Points (GP)")]
+        [Tooltip("Per-turn resource for using gear. Resets at start of each turn.")]
+        public int GearPoints = 1;
+        public int MaxGearPoints = 1;
+
+        [Header("Gear")]
+        [Tooltip("Gear items with remaining uses (per-battle). Format: gear name, remaining uses.")]
+        public List<GearItem> Gear = new List<GearItem>();
+
         [Header("Status Effects")]
         public List<StatusEffect> Statuses = new List<StatusEffect>();
 
@@ -36,6 +50,15 @@ namespace BountyOfTheDeathfeather.CombatSystem
 
         public UnitStats ToUnitStats()
         {
+            var gearDict = new Dictionary<string, int>();
+            foreach (var item in Gear)
+            {
+                if (!string.IsNullOrEmpty(item.Name))
+                {
+                    gearDict[item.Name] = item.RemainingUses;
+                }
+            }
+
             return new UnitStats(
                 lifeHP: LifeHP,
                 maxLifeHP: MaxLifeHP,
@@ -45,7 +68,8 @@ namespace BountyOfTheDeathfeather.CombatSystem
                 maxActionPoints: ActionPoints,
                 movementPoints: MovementPoints,
                 maxMovementPoints: MovementPoints,
-                statuses: Statuses
+                statuses: Statuses,
+                gearUses: gearDict
             );
         }
 
@@ -54,5 +78,30 @@ namespace BountyOfTheDeathfeather.CombatSystem
             // Simple add for now; real logic might merge stacks
             Statuses.Add(status);
         }
+
+        public int GetGearUses(string gearName)
+        {
+            var item = Gear.Find(g => g.Name == gearName);
+            return item != null ? item.RemainingUses : 0;
+        }
+
+        public bool UseGear(string gearName)
+        {
+            var item = Gear.Find(g => g.Name == gearName);
+            if (item != null && item.RemainingUses > 0)
+            {
+                item.RemainingUses--;
+                return true;
+            }
+            return false;
+        }
+    }
+
+    [Serializable]
+    public class GearItem
+    {
+        public string Name;
+        public int RemainingUses;
+        public int MaxUses;
     }
 }

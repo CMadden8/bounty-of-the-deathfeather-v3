@@ -90,27 +90,34 @@ namespace BountyOfTheDeathfeather.CombatSystem.Abilities
 
         public override bool CanPerform(IGridController gridController)
         {
-            if (UnitReference.ActionPoints <= 0)
-            {
-                return false;
-            }
-
-            // Check if there are any enemy units within attack range
+            // Per COMBAT_MECHANICS.md: attacks consume AP but don't end turn if MP remains
+            // Return true if unit has MP (allowing movement after attack) OR if unit has AP and enemies in range
+            // This prevents auto-ending turn when AP=0 but MP>0
+            
             var attackerUnit = UnitReference as TurnBasedStrategyFramework.Unity.Units.Unit;
-            if (attackerUnit == null) return false;
+            if (attackerUnit == null) return UnitReference.MovementPoints > 0;
 
             var attackerIdentity = attackerUnit.GetComponent<CombatIdentity>();
-            if (attackerIdentity == null) return false;
+            if (attackerIdentity == null) return UnitReference.MovementPoints > 0;
 
+            // If no AP, can't attack, but if MP > 0, unit can still move (return true to prevent auto-finish)
+            if (UnitReference.ActionPoints <= 0)
+            {
+                return UnitReference.MovementPoints > 0;
+            }
+
+            // Has AP: check if there are enemy units within attack range
             int attackRange = attackerIdentity.AttackRange;
-
             var enemyUnits = gridController.UnitManager.GetEnemyUnits(
                 gridController.PlayerManager.GetPlayerByNumber(UnitReference.PlayerNumber));
 
-            return enemyUnits.Any(enemy =>
+            bool hasEnemiesInRange = enemyUnits.Any(enemy =>
                 enemy.CurrentCell != null &&
                 UnitReference.CurrentCell != null &&
                 enemy.CurrentCell.GetDistance(UnitReference.CurrentCell) <= attackRange);
+
+            // Return true if enemies in range OR if MP > 0 (allow movement after attack fails)
+            return hasEnemiesInRange || UnitReference.MovementPoints > 0;
         }
 
         public override void OnUnitHighlighted(IUnit unit, IGridController gridController)

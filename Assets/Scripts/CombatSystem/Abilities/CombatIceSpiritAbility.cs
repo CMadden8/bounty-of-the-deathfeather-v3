@@ -95,7 +95,9 @@ namespace BountyOfTheDeathfeather.CombatSystem.Abilities
 
         public override bool CanPerform(IGridController gridController)
         {
-            return UnitReference.ActionPoints >= ActionCost;
+            // Per COMBAT_MECHANICS.md: abilities consume AP but don't end turn if MP remains
+            // Return true if unit has AP for ability OR if MP > 0 (to allow movement)
+            return UnitReference.ActionPoints >= ActionCost || UnitReference.MovementPoints > 0;
         }
     }
 }

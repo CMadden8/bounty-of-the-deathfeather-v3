@@ -180,6 +180,9 @@ namespace CombatPOC.Editor
                         identity.ArmourSlashing = armour.Slashing;
                         identity.ArmourBludgeoning = armour.Bludgeoning;
                         
+                        // Add default gear per COMBAT_MECHANICS.md
+                        InitializeDefaultGear(identity, name);
+                        
                         EditorUtility.SetDirty(identity);
                     }
                 }
@@ -194,17 +197,14 @@ namespace CombatPOC.Editor
                     existing.gameObject.AddComponent<BountyOfTheDeathfeather.CombatSystem.Abilities.CombatAttackAbility>();
                 }
 
-                // Attach Mirashala-specific abilities
+                // Remove Mirashala-specific abilities if they exist (they require TP investment)
                 if (string.Equals(name, "Mirashala", System.StringComparison.InvariantCultureIgnoreCase))
                 {
-                    if (existing.GetComponent<BountyOfTheDeathfeather.CombatSystem.Abilities.CombatFireSpiritAbility>() == null)
-                    {
-                        existing.gameObject.AddComponent<BountyOfTheDeathfeather.CombatSystem.Abilities.CombatFireSpiritAbility>();
-                    }
-                    if (existing.GetComponent<BountyOfTheDeathfeather.CombatSystem.Abilities.CombatIceSpiritAbility>() == null)
-                    {
-                        existing.gameObject.AddComponent<BountyOfTheDeathfeather.CombatSystem.Abilities.CombatIceSpiritAbility>();
-                    }
+                    var fireAbility = existing.GetComponent<BountyOfTheDeathfeather.CombatSystem.Abilities.CombatFireSpiritAbility>();
+                    if (fireAbility != null) Object.DestroyImmediate(fireAbility);
+                    
+                    var iceAbility = existing.GetComponent<BountyOfTheDeathfeather.CombatSystem.Abilities.CombatIceSpiritAbility>();
+                    if (iceAbility != null) Object.DestroyImmediate(iceAbility);
                 }
                 
                 SnapUnitToCell(existing, targetCell);
@@ -284,6 +284,9 @@ namespace CombatPOC.Editor
                     identity.ArmourPiercing = armour.Piercing;
                     identity.ArmourSlashing = armour.Slashing;
                     identity.ArmourBludgeoning = armour.Bludgeoning;
+                    
+                    // Add default gear per COMBAT_MECHANICS.md
+                    InitializeDefaultGear(identity, name);
                 }
             }
             catch
@@ -297,17 +300,14 @@ namespace CombatPOC.Editor
                 go.AddComponent<BountyOfTheDeathfeather.CombatSystem.Abilities.CombatAttackAbility>();
             }
 
-            // Attach Mirashala-specific abilities
+            // Remove Mirashala-specific abilities if they exist (they require TP investment)
             if (string.Equals(name, "Mirashala", System.StringComparison.InvariantCultureIgnoreCase))
             {
-                if (go.GetComponent<BountyOfTheDeathfeather.CombatSystem.Abilities.CombatFireSpiritAbility>() == null)
-                {
-                    go.AddComponent<BountyOfTheDeathfeather.CombatSystem.Abilities.CombatFireSpiritAbility>();
-                }
-                if (go.GetComponent<BountyOfTheDeathfeather.CombatSystem.Abilities.CombatIceSpiritAbility>() == null)
-                {
-                    go.AddComponent<BountyOfTheDeathfeather.CombatSystem.Abilities.CombatIceSpiritAbility>();
-                }
+                var fireAbility = go.GetComponent<BountyOfTheDeathfeather.CombatSystem.Abilities.CombatFireSpiritAbility>();
+                if (fireAbility != null) Object.DestroyImmediate(fireAbility);
+                
+                var iceAbility = go.GetComponent<BountyOfTheDeathfeather.CombatSystem.Abilities.CombatIceSpiritAbility>();
+                if (iceAbility != null) Object.DestroyImmediate(iceAbility);
             }
 
             EditorUtility.SetDirty(simpleUnit);
@@ -351,6 +351,69 @@ namespace CombatPOC.Editor
             // Mark both as dirty so Unity saves the changes
             EditorUtility.SetDirty(unit);
             EditorUtility.SetDirty(cell);
+        }
+
+        /// <summary>
+        /// Initialize default gear per COMBAT_MECHANICS.md for POC characters.
+        /// All heroes: Health Potion x1, Heroic Potion x1.
+        /// Mirashala: + Healing Dust x1.
+        /// Bishep: + Shadow Bomb x2.
+        /// Tharl: + Sporesmith Key x1.
+        /// </summary>
+        private static void InitializeDefaultGear(BountyOfTheDeathfeather.CombatSystem.CombatIdentity identity, string unitName)
+        {
+            if (identity == null) return;
+
+            // Clear existing gear
+            identity.Gear.Clear();
+
+            var nameLower = (unitName ?? string.Empty).ToLowerInvariant();
+
+            // All three heroes get Health Potion and Heroic Potion
+            if (nameLower == "mirashala" || nameLower == "bishep" || nameLower == "tharl")
+            {
+                identity.Gear.Add(new BountyOfTheDeathfeather.CombatSystem.GearItem
+                {
+                    Name = "Health Potion",
+                    RemainingUses = 1,
+                    MaxUses = 1
+                });
+                identity.Gear.Add(new BountyOfTheDeathfeather.CombatSystem.GearItem
+                {
+                    Name = "Heroic Potion",
+                    RemainingUses = 1,
+                    MaxUses = 1
+                });
+            }
+
+            // Character-specific gear
+            switch (nameLower)
+            {
+                case "mirashala":
+                    identity.Gear.Add(new BountyOfTheDeathfeather.CombatSystem.GearItem
+                    {
+                        Name = "Healing Dust",
+                        RemainingUses = 1,
+                        MaxUses = 1
+                    });
+                    break;
+                case "bishep":
+                    identity.Gear.Add(new BountyOfTheDeathfeather.CombatSystem.GearItem
+                    {
+                        Name = "Shadow Bomb",
+                        RemainingUses = 2,
+                        MaxUses = 2
+                    });
+                    break;
+                case "tharl":
+                    identity.Gear.Add(new BountyOfTheDeathfeather.CombatSystem.GearItem
+                    {
+                        Name = "Sporesmith Key",
+                        RemainingUses = 1,
+                        MaxUses = 1
+                    });
+                    break;
+            }
         }
     }
 }

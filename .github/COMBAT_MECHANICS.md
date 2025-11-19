@@ -80,8 +80,12 @@ The battleground consists of various tile types that affect movement, combat, an
 
 5. **Impassible Tiles**: Tiles that cannot be moved to by any unit. These block movement and line-of-sight for abilities and attacks.
 
-## 6. Abilities, AP, Gear
-- Abilities require AP to cast (a per-ability cost). If a unit has insufficient AP, the ability cannot be used. AP resets to default at the end of a battle. There is a flat rate of 1 AP cost per ability that's used. 
+## 6. Abilities, AP, GP, Gear, and Turn Flow
+- Abilities and attacks require AP to cast (a per-ability cost). If a unit has insufficient AP, the ability cannot be used. There is a flat rate of 1 AP cost per ability or attack. All characters have 1 AP per turn.
+- **Gear Points (GP)**: Using gear items requires GP. All characters start with 1 GP per turn. GP resets to 1 at the start of each unit's turn (like AP and MP). Each gear use consumes 1 GP.
+- **Turn Flow**: Using an attack or ability consumes AP but does NOT automatically end the turn. Units can move before or after attacking/using abilities as long as they have MP remaining. A turn ends only when the player explicitly clicks "End Turn" or when the unit has exhausted both AP and MP.
+- Movement consumes MP but does NOT end the turn. Units can move multiple times (consuming MP each time) and attack/use abilities in any order during their turn.
+- AP, MP, and GP reset to default values at the start of each unit's turn.
 - Gear items have per-battle uses; decrement on use. Gear item uses reset to defaults at the end of a battle.
 - End-of-battle: restore all units' AP to the default per character; restore all gear uses to the default per character; and revive downed allies to full armour and life HP.
 
@@ -95,9 +99,9 @@ The battleground consists of various tile types that affect movement, combat, an
 
 ## 9. Level Thresholds
 
-Players start at level 1 with 2 AUPs to spend on abilities.
+Players start at level 1 with 2 TPs to spend on abilities.
 
-AUPs are 'ability upgrade points' that are spent on upgrading abilities.
+TPs are 'talent points' that are spent on upgrading abilities.
 
 Level 2: reached at 100 exp
 Level 3: reached at 300 exp
@@ -116,7 +120,7 @@ Mirashala, Bishep and Tharl are the main player characters. They are the only ma
 - Armour: Piercing 1, Slashing 3, Bludgeoning 1
 - Attack: Piercing 1, range 4
 - Movement: 4
-- AP: 2
+- AP: 1
 - Gear:
   - Health Potion x1 — heals 2 Life HP (can only target self)
   - Heroic Potion x1 — restores 1 AP (can only target self)
@@ -124,67 +128,67 @@ Mirashala, Bishep and Tharl are the main player characters. They are the only ma
 
 - Abilities (overview):
   
-  - **Fire Spirit** (unlock cost: 2 AUP): applies `Burning` to one enemy for 3 turns (burn tick = 2 damage to a random nonzero pool). If any armour HPs are still greater than 0, these have a 50% higher chance of being damaged than the life HP pool. On death-by-burning spawn a `Flame` tile that spreads and applies `Burning`. 
+  - **Fire Spirit** (unlock cost: 2 TP): applies `Burning` to one enemy for 3 turns (burn tick = 2 damage to a random nonzero pool). If any armour HPs are still greater than 0, these have a 50% higher chance of being damaged than the life HP pool. On death-by-burning spawn a `Flame` tile that spreads and applies `Burning`. 
     
     - **Fire Spirit Support Upgrades**
       
-      - *Explosion (1 AUP per level)*: add an AOE that increases AoE radius per level. All units (whether enemy or ally) in the AOE will receive the `Burning` status. The AOE is adjustable via the UI, such that the AOE can be downgraded or upgraded according to the available AOE levels.
+      - *Explosion (1 TP per level)*: add an AOE that increases AoE radius per level. All units (whether enemy or ally) in the AOE will receive the `Burning` status. The AOE is adjustable via the UI, such that the AOE can be downgraded or upgraded according to the available AOE levels.
 
         - Level 1: 1 cell AOE, applying `Burning` to all enemies in the AOE.
         - Level 2: 2 cell AOE, applying `Burning` to all enemies in the AOE.
         - Level 3: 3 cell AOE, applying `Burning` to all enemies in the AOE.
 
-      - *Wildfire (1 AUP per level)*: adds a percentage chance to apply the `Panicked` status to the unit.
+      - *Wildfire (1 TP per level)*: adds a percentage chance to apply the `Panicked` status to the unit.
 
         - Level 1: 20% chance to apply `Panicked`.
         - Level 2: 30% chance to apply `Panicked`.
         - Level 3: 45% chance to apply `Panicked`.
       
-      - *Furnace (1 AUP per level)*: 50% chance to add extra random damage to any HP type, determined by level. If multiple enemies are caught in an AOE, then the chance to do additional damage is calculated on an individual basis per enemy
+      - *Furnace (1 TP per level)*: 50% chance to add extra random damage to any HP type, determined by level. If multiple enemies are caught in an AOE, then the chance to do additional damage is calculated on an individual basis per enemy
 
         - Level 1: 50% chance to add + 1 additional extra random damage to any HP type
         - Level 2: 50% chance to add + 2 additional extra random damage to any HP type
         - Level 3: 50% chance to add + 3 additional extra random damage to any HP type
       
-  - **Ice Spirit** (unlock cost: 2 AUP): creates a 3-cell radius ice tile area for 3 turns; applies `Freezing` stacks. All units (whether enemy or ally) in the AOE will receive the `Freezing` status.
+  - **Ice Spirit** (unlock cost: 2 TP): creates a 3-cell radius ice tile area for 3 turns; applies `Freezing` stacks. All units (whether enemy or ally) in the AOE will receive the `Freezing` status.
     
     - **Ice Spirit Support Upgrades**
       
-      - *Deep Freeze (1 AUP per level)*: Applies a greater Freezing stack % per level.  
+      - *Deep Freeze (1 TP per level)*: Applies a greater Freezing stack % per level.  
 
         - Level 1: Freezing now stacks at 35% per turn.
         - Level 2: Freezing now stacks at 45% per turn.
         - Level 3: Freezing now stacks at 60% per turn.
       
-      - *Creeping Frost (1 AUP per level)*: Extends the AOE of ice tiles. All units (whether enemy or ally) in the AOE will receive the `Freezing` status. The AOE is adjustable via the UI, such that the AOE can be downgraded or upgraded according to the available AOE levels.
+      - *Creeping Frost (1 TP per level)*: Extends the AOE of ice tiles. All units (whether enemy or ally) in the AOE will receive the `Freezing` status. The AOE is adjustable via the UI, such that the AOE can be downgraded or upgraded according to the available AOE levels.
 
         - Level 1: creates a 4-cell radius ice tile area for 3 turns
         - Level 2: creates a 5-cell radius ice tile area for 3 turns
         - Level 3: creates a 6-cell radius ice tile area for 3 turns
             
-      - *Frozen Fingers (1 AUP per level)*: Increases the attack accuracy penalty of the `Freezing` status per level.
+      - *Frozen Fingers (1 TP per level)*: Increases the attack accuracy penalty of the `Freezing` status per level.
 
         - Level 1: changes `Freezing` accuracy penalty to -6% penalty 
         - Level 2: changes `Freezing` accuracy penalty to -12% penalty 
         - Level 3: changes `Freezing` accuracy penalty to -18% penalty (and additionally applies the penalty to ability accuracy)
       
-  - **Lightning Spirit** (unlock cost: 2 AUP): single-target ability that applies the `Lightning Cursed` status.  
+  - **Lightning Spirit** (unlock cost: 2 TP): single-target ability that applies the `Lightning Cursed` status.  
 
     - **Lightning Spirit Support Upgrades**
 
-      - *Lightning Rod (1 AUP per level)*: Adds the `Lightning Rod` status as an additional possible status to the `Lightning Cursed` list of status effects. As with the other `Lightning Cursed` statuses, there's a default 20% chance for `Lightning Rod` to be applied per turn of `Lightning Cursed`.
+      - *Lightning Rod (1 TP per level)*: Adds the `Lightning Rod` status as an additional possible status to the `Lightning Cursed` list of status effects. As with the other `Lightning Cursed` statuses, there's a default 20% chance for `Lightning Rod` to be applied per turn of `Lightning Cursed`.
 
         - Level 1: increases the chance of `Lightning Rod` from 20% to 25%
         - Level 2: increases the chance of `Lightning Rod` from 20% to 30%
         - Level 3: increases the chance of `Lightning Rod` from 20% to 35% (and increases `Lightning Rod` damage from 4 Piercing to 5 Piercing)
 
-      - *Volatile (1 AUP per level)*: Increases the % chance of each default status for `Lightning Cursed` (with the exemption of `Lightning Rod` if it was applied via the `Lightning Rod` ability).
+      - *Volatile (1 TP per level)*: Increases the % chance of each default status for `Lightning Cursed` (with the exemption of `Lightning Rod` if it was applied via the `Lightning Rod` ability).
 
         - Level 1: changes the % chance of each default status for `Lightning Cursed` to 25% 
         - Level 2: changes the % chance of each default status for `Lightning Cursed` to 30% 
         - Level 3: changes the % chance of each default status for `Lightning Cursed` to 35% (and adds a new status to `Lightning Cursed` list of status effects: 35% chance to apply the `Addled` status) 
 
-      - *Spark (1 AUP per level)*: Adds AOE to Lightning Spirit, with the radius based on the level. All units (whether enemy or ally) in the AOE will receive the `Lightning Cursed` status. The AOE is adjustable via the UI, such that the AOE can be downgraded or upgraded according to the available AOE levels.
+      - *Spark (1 TP per level)*: Adds AOE to Lightning Spirit, with the radius based on the level. All units (whether enemy or ally) in the AOE will receive the `Lightning Cursed` status. The AOE is adjustable via the UI, such that the AOE can be downgraded or upgraded according to the available AOE levels.
 
         - Level 1: creates a 1-cell radius for `Lightning Rod`
         - Level 2: creates a 2-cell radius for `Lightning Rod`
@@ -193,7 +197,7 @@ Mirashala, Bishep and Tharl are the main player characters. They are the only ma
 ### Tharl
 - Life: 3
 - Armour: Piercing 2, Slashing 1, Bludgeoning 3
-- AP: 2
+- AP: 1
 - Movement: 5
 - Attack: Piercing 1, range 4
 - Gear:
@@ -203,67 +207,67 @@ Mirashala, Bishep and Tharl are the main player characters. They are the only ma
 
 - Abilities (overview):
 
-  - **Root Turret** (unlock cost: 2 AUP): spawns a stationary turret (a summoned unit) that has no Life HP (dies when its armour is depleted). Default turret stats: Armour Piercing 1, Slashing 1, Bludgeoning 1; attack range 4; attack = 1 Piercing damage. Turret acts as an additional player unit. It begins its turn after the enemy has made their turn following the spawn of the turret.
+  - **Root Turret** (unlock cost: 2 TP): spawns a stationary turret (a summoned unit) that has no Life HP (dies when its armour is depleted). Default turret stats: Armour Piercing 1, Slashing 1, Bludgeoning 1; attack range 4; attack = 1 Piercing damage. Turret acts as an additional player unit. It begins its turn after the enemy has made their turn following the spawn of the turret.
 
     - **Root Turret Support Upgrades**
 
-      - *Root Harpoon (1 AUP per level)*: adds a chance to apply `Pinned` status.
+      - *Root Harpoon (1 TP per level)*: adds a chance to apply `Pinned` status.
 
         - Level 1: 25% chance to apply the `Pinned` status
         - Level 2: 30% chance to apply the `Pinned` status
         - Level 3: 35% chance to apply the `Pinned` status (and increases the default 1 Piercing damage to 3, whether or not `Pinned` was applied)
 
-      - *Root Vision (1 AUP per level)*: increases turret range.
+      - *Root Vision (1 TP per level)*: increases turret range.
 
         - Level 1: attack range is now 5
         - Level 2: attack range is now 6
         - Level 3: attack range is now 7
 
-      - *Root Endurance (1 AUP per level)*: increases turret armour pools.
+      - *Root Endurance (1 TP per level)*: increases turret armour pools.
 
         - Level 1: Armour is now Piercing 2, Slashing 2, Bludgeoning 1
         - Level 2: Armour is now Piercing 3, Slashing 3, Bludgeoning 1
         - Level 3: Armour is now Piercing 4, Slashing 4, Bludgeoning 1
 
-  - **Spore Blast** (unlock cost: 2 AUP): has a default range of 5 and augments Tharl's Piercing attack (+1 Piercing) and adds a 20% chance for extra 1 Slashing and 1 Bludgeoning damage (both are applied if the roll is successful).
+  - **Spore Blast** (unlock cost: 2 TP): has a default range of 5 and augments Tharl's Piercing attack (+1 Piercing) and adds a 20% chance for extra 1 Slashing and 1 Bludgeoning damage (both are applied if the roll is successful).
 
     - **Spore Support Upgrades**
 
-      - *Spore Eruption (1 AUP per level)*: adds AoE radius to the spore effect (can cause friendly fire when enabled). The AOE is adjustable via the UI, such that the AOE can be downgraded or upgraded according to the available AOE levels.
+      - *Spore Eruption (1 TP per level)*: adds AoE radius to the spore effect (can cause friendly fire when enabled). The AOE is adjustable via the UI, such that the AOE can be downgraded or upgraded according to the available AOE levels.
 
         - Level 1: 2 cell AOE.
         - Level 2: 3 cell AOE.
         - Level 3: 4 cell AOE.
 
-      - *Volatile Spore (1 AUP per level)*: increases chance to amplify additional Slashing and Bludgeoning damage.
+      - *Volatile Spore (1 TP per level)*: increases chance to amplify additional Slashing and Bludgeoning damage.
 
         - Level 1: now a 25% chance for extra 1 Slashing and 1 Bludgeoning damage.
         - Level 2: now a 30% chance for extra 1 Slashing and 1 Bludgeoning damage.
         - Level 3: now a 35% chance for extra 2 Slashing and 2 Bludgeoning damage (the Slashing/Bludgeoning bonus is also increased at this level).
 
-      - *Homing Spore (1 AUP per level)*: spawns a controllable new player unit (no Life HP, low armour) that can be guided and then detonated; stats scale with levels. Homing spore only spawns the homing missile if the user chooses not to directly attack an enemy with Spore Blast.
+      - *Homing Spore (1 TP per level)*: spawns a controllable new player unit (no Life HP, low armour) that can be guided and then detonated; stats scale with levels. Homing spore only spawns the homing missile if the user chooses not to directly attack an enemy with Spore Blast.
 
         - Level 1: movement 3, armour 1/1/1, damage 1 Piercing on detonation.
         - Level 2: movement 4, armour 1/1/1, damage 2 Piercing on detonation.
         - Level 3: movement 5, armour 1/1/1, damage 3 Piercing on detonation. Detonates using Spore Eruption radius if unlocked.
   
-  - **Root Ram** (unlock cost: 2 AUP): summons a durable ram unit (no Life HP, armour pools: Piercing 1, Slashing 1, Bludgeoning 2) with movement 4 and a headbutt attack (2 Bludgeoning, range 1). The ram has 1 AP for its abilities (if any are available).
+  - **Root Ram** (unlock cost: 2 TP): summons a durable ram unit (no Life HP, armour pools: Piercing 1, Slashing 1, Bludgeoning 2) with movement 4 and a headbutt attack (2 Bludgeoning, range 1). The ram has 1 AP for its abilities (if any are available).
     
     - **Root Ram Support Upgrades**
       
-      - *Dash Attack (1 AUP per level)*: charges for up a max of 3 cells in a line (player can choose how far it charges), hitting all units, friendly or otherwise, for Bludgeoning damage.
+      - *Dash Attack (1 TP per level)*: charges for up a max of 3 cells in a line (player can choose how far it charges), hitting all units, friendly or otherwise, for Bludgeoning damage.
 
         - Level 1: 1 Bludgeoning to units in the line of fire.
         - Level 2: 2 Bludgeoning to units in the line of fire.
         - Level 3: 3 Bludgeoning to units in the line of fire.
       
-      - *Taunt (1 AUP per level)*: % chance to apply `Enraged` to a enemies in a given radius, forcing them to target the ram.
+      - *Taunt (1 TP per level)*: % chance to apply `Enraged` to a enemies in a given radius, forcing them to target the ram.
 
         - Level 1: 70% chance in 2-cell radius.
         - Level 2: 80% chance in 3-cell radius.
         - Level 3: 90% chance in 4-cell radius + 40% chance to also add the `Clouded` status (this is calculated per enemy in the radius, rather than globally).
 
-      - *Tough Skin (1 AUP per level)*: increases Root Ram armour pools.
+      - *Tough Skin (1 TP per level)*: increases Root Ram armour pools.
 
         - Level 1: Armour is now Piercing 1, Slashing 1, Bludgeoning 2
         - Level 2: Armour is now Piercing 1, Slashing 2, Bludgeoning 2
@@ -272,7 +276,7 @@ Mirashala, Bishep and Tharl are the main player characters. They are the only ma
 ### Bishep
 - Life: 4
 - Armour: Piercing 2, Slashing 2, Bludgeoning 2
-- AP: 2
+- AP: 1
 - Movement: 4
 - Attack types (player-selectable per attack):
   - Mace: 1 Bludgeoning, range 1
@@ -285,67 +289,67 @@ Mirashala, Bishep and Tharl are the main player characters. They are the only ma
 
 - Abilities (overview):
 
-  - **Assassinate** (unlock cost: 2 AUP): enhanced Throwing Blade (range 5, base damage +1). Has a 5% base crit chance that deals additional +1 damage.
+  - **Assassinate** (unlock cost: 2 TP): enhanced Throwing Blade (range 5, base damage +1). Has a 5% base crit chance that deals additional +1 damage.
 
     - **Assassinate Support Upgrades**
 
-      - *Deadly (1 AUP per level)*: increase the default crit chance and critical hit damage.
+      - *Deadly (1 TP per level)*: increase the default crit chance and critical hit damage.
 
         - Level 1: critical chance increases to 10% and damage bonus increases to +2.
         - Level 2: critical chance increases to 15% and critical bonus increases to +3.
         - Level 3: critical chance increases to 20% and critical bonus increases to +4.
 
-      - *Envenomed (1 AUP per level)*: applies `Poisoned` status.
+      - *Envenomed (1 TP per level)*: applies `Poisoned` status.
 
         - Level 1: poison deals the default 1 Life damage per turn for the `Poisoned` status.
         - Level 2: poison deals 2 Life damage per turn.
         - Level 3: poison deals 3 Life damage per turn.
 
-      - *Spore Eruption (1 AUP per level)*: adds AoE radius to Assassinate (can cause friendly fire when enabled). The AOE is adjustable via the UI, such that the AOE can be downgraded or upgraded according to the available AOE levels.
+      - *Spore Eruption (1 TP per level)*: adds AoE radius to Assassinate (can cause friendly fire when enabled). The AOE is adjustable via the UI, such that the AOE can be downgraded or upgraded according to the available AOE levels.
 
         - Level 1: 2 cell AOE.
         - Level 2: 3 cell AOE.
         - Level 3: 4 cell AOE.
 
-  - **Vortex** (unlock cost: 2 AUP): Mace attack that knocks a target back by 3 cells and draws nearby enemies into a 2-cell radius vortex. This attack never affects allied units. All affected enemies move 2 cells closer to the target enemy at the centre of the vortex. If they collide with the central enemy, it causes an additional 1 Bludgeoning damage to both the central enemy and the enemy who collided with them.
+  - **Vortex** (unlock cost: 2 TP): Mace attack that knocks a target back by 3 cells and draws nearby enemies into a 2-cell radius vortex. This attack never affects allied units. All affected enemies move 2 cells closer to the target enemy at the centre of the vortex. If they collide with the central enemy, it causes an additional 1 Bludgeoning damage to both the central enemy and the enemy who collided with them.
     
     - **Vortex Support Upgrades**
       
-      - *Brutal Energies (1 AUP per level)*: adds guaranteed bonus damage to all enemies within the vortex AOE. 
+      - *Brutal Energies (1 TP per level)*: adds guaranteed bonus damage to all enemies within the vortex AOE. 
       
         - Level 1: enemies pulled into the vortex take +1 additional damage to whatever other damage they may accumulate due to vortex rules
         - Level 2: enemies pulled into the vortex take +2 additional damage to whatever other damage they may accumulate due to vortex rules
         - Level 3: enemies pulled into the vortex take +3 additional damage to whatever other damage they may accumulate due to vortex rules
 
-      - *Mind Rend (1 AUP per level)*: chance to inflict `Concussion` to all enemies within the vortex AOE. 
+      - *Mind Rend (1 TP per level)*: chance to inflict `Concussion` to all enemies within the vortex AOE. 
       
         - Level 1: 20% chance to inflict `Concussion`
         - level 2: 30% chance to inflict `Concussion`
         - Level 3: 40% chance to inflict `Concussion`
             
-      - *Toxic Core (1 AUP per level)* chance to inflict `Poison` to all enemies within the vortex AOE.  
+      - *Toxic Core (1 TP per level)* chance to inflict `Poison` to all enemies within the vortex AOE.  
       
         - Level 1: 20% chance to inflict `Poisoned`
         - level 2: 30% chance to inflict `Poisoned`
         - Level 3: 40% chance to inflict `Poisoned`
 
-  - **Shadow Axis** (unlock cost: 2 AUP): sword attack that creates a T-shaped blast that is 1 cell to the left, right and top of the original target. It deals 2 Slashing damage to the original target and 1 Slashing damage to each enemy caught within the T-shaped blast.
+  - **Shadow Axis** (unlock cost: 2 TP): sword attack that creates a T-shaped blast that is 1 cell to the left, right and top of the original target. It deals 2 Slashing damage to the original target and 1 Slashing damage to each enemy caught within the T-shaped blast.
 
     - **Shadow Axis Support Upgrades**
 
-      - *Deathly Materials (1 AUP per level)*: repairs armour for each enemy caught in the T-blast (but does not repair it for the target enemy).
+      - *Deathly Materials (1 TP per level)*: repairs armour for each enemy caught in the T-blast (but does not repair it for the target enemy).
 
         - Level 1: Restores 1 Piercing armour HP per enemy caught in the T-blast
         - Level 2: Restores 1 Piercing and 1 Bludgeoning armour HP per enemy caught in the T-blast
         - Level 3: Restores 1 Piercing, 1 Bludgeoning and 1 Slashing armour HP per enemy caught in the T-blast
 
-      - *Devastate (1 AUP per level)*: increases the number of cells affected by the T-shaped blast.
+      - *Devastate (1 TP per level)*: increases the number of cells affected by the T-shaped blast.
 
         - Level 1: T-shaped blast that is 2 cells to the left, right and top of the original target
         - Level 2: T-shaped blast that is 3 cells to the left, right and top of the original target
         - Level 3: T-shaped blast that is 4 cells to the left, right and top of the original target
 
-      - *Devastate (1 AUP per level)*: adds a chance to inflict `Clouded` on both the original target and anyone caught in the T-shaped blast.
+      - *Devastate (1 TP per level)*: adds a chance to inflict `Clouded` on both the original target and anyone caught in the T-shaped blast.
 
         - Level 1: 20% chance to inflict `Clouded` on both the original target and anyone caught in the T-shaped blast.
         - Level 2: 30% chance to inflict `Clouded` on both the original target and anyone caught in the T-shaped blast.
@@ -383,7 +387,7 @@ General enemy AI uses the API and script format used by the TBSF for enemy AI. H
 - Life: 2
 - Armour: Piercing 2, Slashing 2, Bludgeoning 1
 - Movement: 4
-- AP: 2
+- AP: 1
 - Attack: 1 Slashing, range 1
 
 Abilities:
@@ -401,7 +405,7 @@ Groctopod Grabber AI:
 - Life: 2
 - Armour: Piercing 2, Slashing 2, Bludgeoning 2
 - Movement: 4
-- AP: 2
+- AP: 1
 - Attack: 1 Slashing, range 1
 
 Abilities:
@@ -439,7 +443,7 @@ Spore Spitter AI:
 - Invulnerable 
 - Has no attack
 - Can only be activated by Tharl's Sporesmith Key
-- AP: 2
+- AP: 1
 
 Sporesmith abilities:
 
@@ -454,7 +458,7 @@ Sporesmith upgrades (TBD):
 - Invulnerable 
 - Has no attack
 - Can only be activated by Mirashala's Healing Dust
-- AP: 2
+- AP: 1
 
 Healing Well abilities:
 

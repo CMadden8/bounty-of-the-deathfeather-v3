@@ -106,6 +106,19 @@ namespace CombatPOC.Editor
                 mat.shader = shader;
             }
             mat.color = color;
+            
+            // Keep materials opaque (default mode)
+            if (mat.shader.name == "Standard")
+            {
+                mat.SetFloat("_Mode", 0); // Opaque mode
+                mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
+                mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
+                mat.SetInt("_ZWrite", 1);
+                mat.DisableKeyword("_ALPHATEST_ON");
+                mat.DisableKeyword("_ALPHABLEND_ON");
+                mat.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+                mat.renderQueue = -1; // Default render queue
+            }
             EditorUtility.SetDirty(mat);
             AssetDatabase.SaveAssets();
             
@@ -161,14 +174,14 @@ namespace CombatPOC.Editor
             // UnMark - restore to the cell's base material color (not white, preserves the cell color)
             GameObject unMarkObj = CreateRendererHighlighter("UnMark", highlightersContainer, renderer, baseColor);
             
-            // MarkAsHighlighted - for mouse hover (blue)
-            GameObject highlightedObj = CreateRendererHighlighter("MarkAsHighlighted", highlightersContainer, renderer, new Color(0.5f, 0.7f, 1f));
+            // MarkAsHighlighted - for mouse hover (blue with 5% opacity - virtually invisible for testing)
+            GameObject highlightedObj = CreateRendererHighlighter("MarkAsHighlighted", highlightersContainer, renderer, new Color(0.5f, 0.7f, 1f, 0.05f));
             
-            // MarkAsReachable - for movement range (yellow)
-            GameObject reachableObj = CreateRendererHighlighter("MarkAsReachable", highlightersContainer, renderer, new Color(1f, 0.9f, 0.4f));
+            // MarkAsReachable - for movement range (yellow with 5% opacity - virtually invisible for testing)
+            GameObject reachableObj = CreateRendererHighlighter("MarkAsReachable", highlightersContainer, renderer, new Color(1f, 0.9f, 0.4f, 0.05f));
             
-            // MarkAsPath - for movement path (green)
-            GameObject pathObj = CreateRendererHighlighter("MarkAsPath", highlightersContainer, renderer, new Color(0.5f, 1f, 0.5f));
+            // MarkAsPath - for movement path (green with 5% opacity - virtually invisible for testing)
+            GameObject pathObj = CreateRendererHighlighter("MarkAsPath", highlightersContainer, renderer, new Color(0.3f, 1f, 0.3f, 0.05f));
             
             // Assign highlighters to Square component via reflection (fields are serialized)
             var squareType = typeof(Square);
