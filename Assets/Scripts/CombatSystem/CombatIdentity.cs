@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace BountyOfTheDeathfeather.CombatSystem
@@ -28,6 +29,9 @@ namespace BountyOfTheDeathfeather.CombatSystem
         public int ActionPoints = 2;
         public int MovementPoints = 5;
 
+        [Header("Status Effects")]
+        public List<StatusEffect> Statuses = new List<StatusEffect>();
+
         public ArmourPools GetArmourPools() => new ArmourPools(ArmourPiercing, ArmourSlashing, ArmourBludgeoning);
 
         public UnitStats ToUnitStats()
@@ -40,8 +44,15 @@ namespace BountyOfTheDeathfeather.CombatSystem
                 actionPoints: ActionPoints,
                 maxActionPoints: ActionPoints,
                 movementPoints: MovementPoints,
-                maxMovementPoints: MovementPoints
+                maxMovementPoints: MovementPoints,
+                statuses: Statuses
             );
+        }
+
+        public void AddStatus(StatusEffect status)
+        {
+            // Simple add for now; real logic might merge stacks
+            Statuses.Add(status);
         }
     }
 }

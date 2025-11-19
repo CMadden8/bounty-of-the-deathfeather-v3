@@ -54,7 +54,7 @@ namespace CombatPOC.Units
         {
             if (_gridController == null)
             {
-                _gridController = Object.FindObjectOfType<UnityGridController>();
+                _gridController = Object.FindFirstObjectByType<UnityGridController>();
             }
 
             if (_gridController != null)

@@ -23,7 +23,7 @@ namespace CombatPOC.Editor
                 return;
             }
 
-            var cellManager = Object.FindObjectOfType<RegularCellManager>();
+            var cellManager = Object.FindFirstObjectByType<RegularCellManager>();
             if (cellManager == null)
             {
                 EditorUtility.DisplayDialog("Reposition Unit", "No RegularCellManager found in scene.", "OK");

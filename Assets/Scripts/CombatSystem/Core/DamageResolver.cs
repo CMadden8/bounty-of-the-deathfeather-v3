@@ -207,6 +207,78 @@ namespace BountyOfTheDeathfeather.CombatSystem
         }
 
         /// <summary>
+        /// Resolves Burning tick damage: deals damage to a random nonzero armour pool,
+        /// or to Life HP if all armour is depleted.
+        /// </summary>
+        public DamageResult ResolveBurningTick(UnitStats target, int damage)
+        {
+            if (damage <= 0)
+            {
+                return new DamageResult(target, 0, 0, false, new Dictionary<DamageType, int>());
+            }
+
+            var currentStats = target;
+            int totalArmourDamage = 0;
+            int totalLifeDamage = 0;
+            var damageByType = new Dictionary<DamageType, int>();
+
+            // Check if any armour pool is > 0
+            var availablePools = new List<DamageType>();
+            if (currentStats.Armour.Piercing > 0) availablePools.Add(DamageType.Piercing);
+            if (currentStats.Armour.Slashing > 0) availablePools.Add(DamageType.Slashing);
+            if (currentStats.Armour.Bludgeoning > 0) availablePools.Add(DamageType.Bludgeoning);
+
+            if (availablePools.Count > 0)
+            {
+                // Pick random pool
+                int index = _random.Range(0, availablePools.Count);
+                var type = availablePools[index];
+
+                // Apply damage to that pool
+                var (newArmour, overflow) = currentStats.Armour.ApplyDamage(type, damage);
+                currentStats = currentStats.WithArmour(newArmour);
+                
+                int absorbed = damage - overflow;
+                totalArmourDamage += absorbed;
+                damageByType[type] = absorbed;
+
+                // If overflow > 0, it means that specific pool was depleted.
+                // Per mechanics: "armour pools first, then life once armour is 0".
+                // This implies if we hit a pool with 1 HP with 2 damage, 1 is absorbed, 1 is overflow.
+                // Does overflow go to another pool or Life?
+                // "Burning: each tick deals N damage (configurable) to a random nonzero pool (armour pools first, then life once armour is 0)."
+                // This phrasing suggests we target a pool. If it depletes, does the rest spill?
+                // "then life once armour is 0" usually means "once ALL armour is 0".
+                // If we interpret strictly: we pick a pool. We damage it. If it reaches 0, we stop? Or re-roll?
+                // Let's assume standard spill logic: if the target pool depletes, the rest is lost unless ALL armour is gone.
+                // BUT, if ALL armour is gone, we damage Life.
+                
+                if (overflow > 0 && newArmour.IsFullyDepleted)
+                {
+                    int lifeDamage = Math.Min(overflow, currentStats.LifeHP);
+                    currentStats = currentStats.WithLifeHP(currentStats.LifeHP - lifeDamage);
+                    totalLifeDamage += lifeDamage;
+                }
+            }
+            else
+            {
+                // All armour 0, damage Life
+                int lifeDamage = Math.Min(damage, currentStats.LifeHP);
+                currentStats = currentStats.WithLifeHP(currentStats.LifeHP - lifeDamage);
+                totalLifeDamage += lifeDamage;
+            }
+
+            bool wasKilled = currentStats.LifeHP <= 0;
+
+            return new DamageResult(
+                currentStats,
+                totalArmourDamage,
+                totalLifeDamage,
+                wasKilled,
+                damageByType);
+        }
+
+        /// <summary>
         /// Calculates accuracy for an attack based on tile tier and status modifiers.
         /// Per COMBAT_MECHANICS.md: base accuracy varies by tile, modified by statuses.
         /// </summary>

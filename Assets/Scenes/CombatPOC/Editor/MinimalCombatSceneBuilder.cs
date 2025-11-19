@@ -25,14 +25,14 @@ namespace CombatPOC.Editor
         [MenuItem(MenuPath)]
         public static void Build()
         {
-            var controller = Object.FindObjectOfType<UnityGridController>();
+            var controller = Object.FindFirstObjectByType<UnityGridController>();
             if (controller == null)
             {
                 EditorUtility.DisplayDialog("Minimal MVP Setup", "No UnityGridController found in the open scene.", "OK");
                 return;
             }
 
-            var cellManager = Object.FindObjectOfType<RegularCellManager>();
+            var cellManager = Object.FindFirstObjectByType<RegularCellManager>();
             if (cellManager == null)
             {
                 EditorUtility.DisplayDialog("Minimal MVP Setup", "No RegularCellManager found. Create/paint at least two cells first.", "OK");
@@ -52,6 +52,9 @@ namespace CombatPOC.Editor
             var playerManager = EnsureChildComponent<UnityPlayerManager>(controller.transform, "PlayerManager");
             var unitManager = EnsureChildComponent<UnityUnitManager>(controller.transform, "UnitManager");
             var turnResolver = EnsureChildComponent<SubsequentTurnResolver>(controller.transform, "TurnResolver");
+            var statusManager = EnsureChildComponent<BountyOfTheDeathfeather.CombatSystem.Managers.CombatStatusManager>(controller.transform, "CombatStatusManager");
+            var tileManager = EnsureChildComponent<BountyOfTheDeathfeather.CombatSystem.Tiles.CombatTileManager>(controller.transform, "CombatTileManager");
+            var actionFooter = EnsureChildComponent<BountyOfTheDeathfeather.CombatSystem.UI.CombatActionFooterUI>(controller.transform, "CombatActionFooterUI");
 
             controller.CellManager = cellManager;
             controller.PlayerManager = playerManager;
@@ -60,6 +63,9 @@ namespace CombatPOC.Editor
 
             EnsurePlayer(playerManager.transform, "Player_0", 0, typeof(HumanPlayer));
             EnsurePlayer(playerManager.transform, "Player_1", 1, typeof(HumanPlayer));
+
+            // Clear all cell occupancy state before re-assigning units
+            ClearAllCellOccupancy(availableCells);
 
             // Spawn three player heroes (Tharl, Bishep, Mirashala)
             EnsureUnit(unitManager.transform, "Tharl", 0, availableCells[0]);
@@ -79,6 +85,16 @@ namespace CombatPOC.Editor
             Undo.CollapseUndoOperations(undoGroup);
 
             Debug.Log("Combat POC: Minimal MVP setup complete.");
+        }
+
+        private static void ClearAllCellOccupancy(System.Collections.Generic.List<Cell> cells)
+        {
+            foreach (var cell in cells)
+            {
+                cell.IsTaken = false;
+                cell.CurrentUnits.Clear();
+                EditorUtility.SetDirty(cell);
+            }
         }
 
         private static T EnsureChildComponent<T>(Transform parent, string childName) where T : Component
@@ -171,6 +187,25 @@ namespace CombatPOC.Editor
                 {
                     // ignore template errors
                 }
+
+                // Ensure CombatAttackAbility is attached to existing units too
+                if (existing.GetComponent<BountyOfTheDeathfeather.CombatSystem.Abilities.CombatAttackAbility>() == null)
+                {
+                    existing.gameObject.AddComponent<BountyOfTheDeathfeather.CombatSystem.Abilities.CombatAttackAbility>();
+                }
+
+                // Attach Mirashala-specific abilities
+                if (string.Equals(name, "Mirashala", System.StringComparison.InvariantCultureIgnoreCase))
+                {
+                    if (existing.GetComponent<BountyOfTheDeathfeather.CombatSystem.Abilities.CombatFireSpiritAbility>() == null)
+                    {
+                        existing.gameObject.AddComponent<BountyOfTheDeathfeather.CombatSystem.Abilities.CombatFireSpiritAbility>();
+                    }
+                    if (existing.GetComponent<BountyOfTheDeathfeather.CombatSystem.Abilities.CombatIceSpiritAbility>() == null)
+                    {
+                        existing.gameObject.AddComponent<BountyOfTheDeathfeather.CombatSystem.Abilities.CombatIceSpiritAbility>();
+                    }
+                }
                 
                 SnapUnitToCell(existing, targetCell);
                 EditorUtility.SetDirty(existing);
@@ -255,6 +290,26 @@ namespace CombatPOC.Editor
             {
                 // ignore
             }
+
+            // Attach CombatAttackAbility to enable attacking
+            if (go.GetComponent<BountyOfTheDeathfeather.CombatSystem.Abilities.CombatAttackAbility>() == null)
+            {
+                go.AddComponent<BountyOfTheDeathfeather.CombatSystem.Abilities.CombatAttackAbility>();
+            }
+
+            // Attach Mirashala-specific abilities
+            if (string.Equals(name, "Mirashala", System.StringComparison.InvariantCultureIgnoreCase))
+            {
+                if (go.GetComponent<BountyOfTheDeathfeather.CombatSystem.Abilities.CombatFireSpiritAbility>() == null)
+                {
+                    go.AddComponent<BountyOfTheDeathfeather.CombatSystem.Abilities.CombatFireSpiritAbility>();
+                }
+                if (go.GetComponent<BountyOfTheDeathfeather.CombatSystem.Abilities.CombatIceSpiritAbility>() == null)
+                {
+                    go.AddComponent<BountyOfTheDeathfeather.CombatSystem.Abilities.CombatIceSpiritAbility>();
+                }
+            }
+
             EditorUtility.SetDirty(simpleUnit);
 
             return simpleUnit;
@@ -267,9 +322,20 @@ namespace CombatPOC.Editor
                 return;
             }
 
+            // Clear old cell occupancy if unit was previously assigned
+            if (unit.CurrentCell != null && unit.CurrentCell != cell)
+            {
+                unit.CurrentCell.IsTaken = false;
+                unit.CurrentCell.CurrentUnits.Remove(unit);
+                EditorUtility.SetDirty(unit.CurrentCell as Cell);
+            }
+
             unit.CurrentCell = cell;
             cell.IsTaken = true;
-            cell.CurrentUnits.Add(unit);
+            if (!cell.CurrentUnits.Contains(unit))
+            {
+                cell.CurrentUnits.Add(unit);
+            }
             
             // Position unit at cell's center
             // Cell prefabs have root at origin and visual at (0.5, 0, 0.5)

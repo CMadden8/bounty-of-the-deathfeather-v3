@@ -150,7 +150,7 @@ namespace CombatPOC.Editor
 
         private void RefreshCells()
         {
-            var cellManager = FindObjectOfType<RegularCellManager>();
+            var cellManager = Object.FindFirstObjectByType<RegularCellManager>();
             if (cellManager == null)
             {
                 _availableCells.Clear();

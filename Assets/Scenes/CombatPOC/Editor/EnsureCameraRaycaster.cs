@@ -38,7 +38,7 @@ namespace CombatPOC.Editor
             }
 
             // Ensure EventSystem exists in scene
-            var eventSystem = Object.FindObjectOfType<EventSystem>();
+            var eventSystem = Object.FindFirstObjectByType<EventSystem>();
             if (eventSystem == null)
             {
                 var eventSystemObj = new GameObject("EventSystem");
