@@ -107,37 +107,38 @@ namespace BountyOfTheDeathfeather.CombatSystem.Tiles
 
         private void ApplyTileEffectsToUnits(int currentPlayerNumber)
         {
-            foreach (var kvp in _activeEffects)
+            // Get all units for current player
+            var playerUnits = _gridController.UnitManager.GetUnits()
+                .Where(u => u.PlayerNumber == currentPlayerNumber)
+                .ToList();
+
+            foreach (var unit in playerUnits)
             {
-                var coords = kvp.Key;
-                var effect = kvp.Value;
-                var cell = _gridController.CellManager.GetCellAt(new Vector2IntImpl(coords.x, coords.y));
-                
-                if (cell == null || cell.CurrentUnits.Count == 0) continue;
+                if (unit.CurrentCell == null) continue;
 
-                foreach (var unit in cell.CurrentUnits)
+                var unityUnit = unit as TurnBasedStrategyFramework.Unity.Units.Unit;
+                if (unityUnit == null) continue;
+                var identity = unityUnit.GetComponent<CombatIdentity>();
+                if (identity == null) continue;
+
+                // Check if this unit's cell has an active effect
+                var unitCoords = new Vector2Int(unit.CurrentCell.GridCoordinates.x, unit.CurrentCell.GridCoordinates.y);
+                if (!_activeEffects.TryGetValue(unitCoords, out var effect))
+                    continue; // No effect on this unit's cell
+
+                if (effect.Type == TileEffectType.Flame)
                 {
-                    if (unit.PlayerNumber != currentPlayerNumber) continue;
-
-                    var unityUnit = unit as TurnBasedStrategyFramework.Unity.Units.Unit;
-                    if (unityUnit == null) continue;
-                    var identity = unityUnit.GetComponent<CombatIdentity>();
-                    if (identity == null) continue;
-
-                    if (effect.Type == TileEffectType.Flame)
-                    {
-                        // Apply Burning
-                        identity.AddStatus(new StatusEffect(CombatStatusIds.Burning, 1, 3));
-                        Debug.Log($"[CombatTileManager] Flame tile applied Burning to {unityUnit.name}");
-                    }
-                    else if (effect.Type == TileEffectType.Ice)
-                    {
-                        // Apply Freezing (accumulate stacks logic handled by StatusManager or here?)
-                        // "accumulates percent stacks while unit stands in ice tiles"
-                        // For MVP, just add Freezing status
-                        identity.AddStatus(new StatusEffect(CombatStatusIds.Freezing, 1, 3));
-                        Debug.Log($"[CombatTileManager] Ice tile applied Freezing to {unityUnit.name}");
-                    }
+                    // Apply Burning
+                    identity.AddStatus(new StatusEffect(CombatStatusIds.Burning, 1, 3));
+                    Debug.Log($"[CombatTileManager] Flame tile applied Burning to {unityUnit.name} at {unitCoords}");
+                }
+                else if (effect.Type == TileEffectType.Ice)
+                {
+                    // Apply Freezing (accumulate stacks logic handled by StatusManager or here?)
+                    // "accumulates percent stacks while unit stands in ice tiles"
+                    // For MVP, just add Freezing status
+                    identity.AddStatus(new StatusEffect(CombatStatusIds.Freezing, 1, 3));
+                    Debug.Log($"[CombatTileManager] Ice tile applied Freezing to {unityUnit.name} at {unitCoords}");
                 }
             }
         }

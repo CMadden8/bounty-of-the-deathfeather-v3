@@ -91,6 +91,13 @@ namespace CombatPOC.Units
                 return;
             }
 
+            // Check if this unit is already selected (avoid re-entering state)
+            if (_gridController.GridState is GridStateUnitSelected)
+            {
+                Debug.Log($"SimpleUnit '{name}': Already in selection state, ignoring re-selection");
+                return;
+            }
+
             Debug.Log($"SimpleUnit '{name}': Selected! PlayerNumber={PlayerNumber}, BaseAbilities={GetBaseAbilities().Count()}");
             
             // Select this unit, passing base abilities (MoveAbility, AttackAbility) to the state

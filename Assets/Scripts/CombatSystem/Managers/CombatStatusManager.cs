@@ -30,9 +30,13 @@ namespace BountyOfTheDeathfeather.CombatSystem.Managers
 
         private void OnEnable()
         {
+            if (_gridController == null)
+            {
+                _gridController = FindFirstObjectByType<UnityGridController>();
+            }
             if (_gridController != null)
             {
-                 _gridController = FindFirstObjectByType<UnityGridController>();
+                _gridController.TurnStarted += OnTurnStarted;
             }
         }
 

@@ -52,12 +52,7 @@ namespace BountyOfTheDeathfeather.CombatSystem.UI
 
         private void OnUnitAdded(IUnit unit)
         {
-            unit.UnitSelected += OnUnitSelected;
-        }
-
-        private void OnUnitSelected(IUnit unit)
-        {
-            _pendingUnit = unit;
+            // Don't subscribe to UnitSelected event - we'll detect selection via GridState changes
         }
 
         private void Update()
@@ -79,7 +74,7 @@ namespace BountyOfTheDeathfeather.CombatSystem.UI
             }
 
             // Handle new selection logic
-            if (currentState is GridStateUnitSelected)
+            if (currentState is GridStateUnitSelected selectedState)
             {
                 // Skip if this is a state we just created
                 if (_isMyCustomState)
@@ -88,15 +83,18 @@ namespace BountyOfTheDeathfeather.CombatSystem.UI
                     return;
                 }
 
+                // Get the selected unit from the state via reflection
+                var stateType = selectedState.GetType();
+                var unitField = stateType.GetField("_selectedUnit", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+                var selectedUnit = unitField?.GetValue(selectedState) as IUnit;
+
                 // New unit selected - process it
-                if (_pendingUnit != null)
+                if (selectedUnit != null && selectedUnit != _currentUnit)
                 {
-                    _currentUnit = _pendingUnit;
-                    _pendingUnit = null;
-                    
+                    _currentUnit = selectedUnit;
                     _allAbilities = _currentUnit.GetBaseAbilities().ToList();
                     
-                    Debug.Log($"[CombatActionFooterUI] Unit selected: {_currentUnit}, abilities: {_allAbilities.Count}");
+                    Debug.Log($"[CombatActionFooterUI] Unit selected: {_currentUnit.GetType().Name}, abilities: {_allAbilities.Count}");
                     
                     // Default to Move/Attack
                     ActivateDefaultAbilities();
@@ -138,19 +136,31 @@ namespace BountyOfTheDeathfeather.CombatSystem.UI
 
             float screenHeight = Screen.height;
             float screenWidth = Screen.width;
-            float footerHeight = 80f;
-            float buttonWidth = 140f;
-            float buttonHeight = 40f;
-            float spacing = 10f;
+            
+            // Responsive scaling based on screen height
+            // Reference: 1080p (1920x1080) as baseline
+            float scaleFactor = Mathf.Clamp(screenHeight / 1080f, 0.75f, 2.0f);
+            
+            float footerHeight = 80f * scaleFactor;
+            float buttonWidth = 140f * scaleFactor;
+            float buttonHeight = 40f * scaleFactor;
+            float spacing = 10f * scaleFactor;
+            int fontSize = Mathf.RoundToInt(12f * scaleFactor);
 
             // Draw background
-            GUI.Box(new Rect(0, screenHeight - footerHeight, screenWidth, footerHeight), "Actions");
+            GUIStyle boxStyle = new GUIStyle(GUI.skin.box);
+            boxStyle.fontSize = fontSize;
+            GUI.Box(new Rect(0, screenHeight - footerHeight, screenWidth, footerHeight), "Actions", boxStyle);
 
-            float startX = 20f;
-            float startY = screenHeight - footerHeight + 20f;
+            float startX = 20f * scaleFactor;
+            float startY = screenHeight - footerHeight + 20f * scaleFactor;
+
+            // Create scaled button style
+            GUIStyle buttonStyle = new GUIStyle(GUI.skin.button);
+            buttonStyle.fontSize = fontSize;
 
             // "Move / Attack" Button (Resets to defaults)
-            if (GUI.Button(new Rect(startX, startY, buttonWidth, buttonHeight), "Move / Attack"))
+            if (GUI.Button(new Rect(startX, startY, buttonWidth, buttonHeight), "Move / Attack", buttonStyle))
             {
                 ActivateDefaultAbilities();
             }
@@ -171,7 +181,7 @@ namespace BountyOfTheDeathfeather.CombatSystem.UI
                     GUI.color = Color.green;
                 }
 
-                if (GUI.Button(new Rect(startX, startY, buttonWidth, buttonHeight), name))
+                if (GUI.Button(new Rect(startX, startY, buttonWidth, buttonHeight), name, buttonStyle))
                 {
                     ActivateAbility(ability);
                 }
@@ -181,7 +191,7 @@ namespace BountyOfTheDeathfeather.CombatSystem.UI
             }
             
             // End Turn Button (Right aligned)
-            if (GUI.Button(new Rect(screenWidth - buttonWidth - 20f, startY, buttonWidth, buttonHeight), "End Turn"))
+            if (GUI.Button(new Rect(screenWidth - buttonWidth - 20f * scaleFactor, startY, buttonWidth, buttonHeight), "End Turn", buttonStyle))
             {
                 _gridController.EndTurn();
             }
