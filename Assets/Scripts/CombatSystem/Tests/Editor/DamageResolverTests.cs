@@ -7,12 +7,12 @@ namespace BountyOfTheDeathfeather.Tests.CombatSystem
     /// <summary>
     /// Deterministic RNG for testing - always returns predictable values.
     /// </summary>
-    public class DeterministicRandomProvider : IRandomProvider
+    public class TestDeterministicRandomProvider : IRandomProvider
     {
         private readonly float[] _sequence;
         private int _index;
 
-        public DeterministicRandomProvider(params float[] sequence)
+        public TestDeterministicRandomProvider(params float[] sequence)
         {
             _sequence = sequence;
             _index = 0;
@@ -50,7 +50,7 @@ namespace BountyOfTheDeathfeather.Tests.CombatSystem
         public void ResolveAttack_Miss_NoDamageApplied()
         {
             // Arrange: RNG returns 0.95 (miss, since base accuracy 0.85)
-            var rng = new DeterministicRandomProvider(0.95f);
+            var rng = new TestDeterministicRandomProvider(0.95f);
             var resolver = new DamageResolver(rng);
 
             var attacker = CreateTestUnit();
@@ -74,10 +74,10 @@ namespace BountyOfTheDeathfeather.Tests.CombatSystem
         }
 
         [Test]
-        public void ResolveAttack_Hit_DamagesArmour()
+        public void ResolveAttack_Hit_DamagesArmourBypass()
         {
             // Arrange: RNG returns 0.5 (hit)
-            var rng = new DeterministicRandomProvider(0.5f);
+            var rng = new TestDeterministicRandomProvider(0.5f);
             var resolver = new DamageResolver(rng);
 
             var attacker = CreateTestUnit();
@@ -196,7 +196,7 @@ namespace BountyOfTheDeathfeather.Tests.CombatSystem
             // Base accuracy = 0.85, critical = 0.95. Roll 0.80 will hit but not crit.
             // Roll 0.96 will hit (if accuracy >= 0.96) OR we adjust accuracy.
             // Let's set accuracy modifier to +0.15 so final accuracy = 1.0, then roll 0.96 is a hit AND critical.
-            var rng = new DeterministicRandomProvider(0.96f);
+            var rng = new TestDeterministicRandomProvider(0.96f);
             var resolver = new DamageResolver(rng);
 
             var attacker = CreateTestUnit();
@@ -225,7 +225,7 @@ namespace BountyOfTheDeathfeather.Tests.CombatSystem
         public void ResolveAttack_BypassArmour_DirectLifeDamage()
         {
             // Arrange: Poison bypasses armour
-            var rng = new DeterministicRandomProvider(0.5f);
+            var rng = new TestDeterministicRandomProvider(0.5f);
             var resolver = new DamageResolver(rng);
 
             var attacker = CreateTestUnit();
@@ -253,7 +253,7 @@ namespace BountyOfTheDeathfeather.Tests.CombatSystem
         public void ResolveAttack_KillsUnit_WhenLifeReachesZero()
         {
             // Arrange: Lethal damage
-            var rng = new DeterministicRandomProvider(0.5f);
+            var rng = new TestDeterministicRandomProvider(0.5f);
             var resolver = new DamageResolver(rng);
 
             var attacker = CreateTestUnit();
@@ -279,7 +279,7 @@ namespace BountyOfTheDeathfeather.Tests.CombatSystem
         public void ApplyDirectLifeDamage_BypassesAccuracyAndArmour()
         {
             // Arrange: Direct damage (e.g., Poison tick, falling)
-            var rng = new DeterministicRandomProvider(0.99f); // RNG not used
+            var rng = new TestDeterministicRandomProvider(0.99f); // RNG not used
             var resolver = new DamageResolver(rng);
 
             var defender = CreateTestUnit(); // 10/10/10 armour, 20 Life
@@ -299,7 +299,7 @@ namespace BountyOfTheDeathfeather.Tests.CombatSystem
         public void CalculateAccuracy_TierAdvantage_IncreasesAccuracy()
         {
             // Arrange
-            var rng = new DeterministicRandomProvider(0.5f);
+            var rng = new TestDeterministicRandomProvider(0.5f);
             var resolver = new DamageResolver(rng);
             var attacker = CreateTestUnit();
             var defender = CreateTestUnit();
@@ -321,7 +321,7 @@ namespace BountyOfTheDeathfeather.Tests.CombatSystem
         public void CalculateAccuracy_StatusModifiers_AppliedCorrectly()
         {
             // Arrange
-            var rng = new DeterministicRandomProvider(0.5f);
+            var rng = new TestDeterministicRandomProvider(0.5f);
             var resolver = new DamageResolver(rng);
 
             var attackerStatuses = new List<StatusEffect>

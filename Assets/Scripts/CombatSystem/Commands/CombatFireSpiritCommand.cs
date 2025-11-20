@@ -40,12 +40,43 @@ namespace BountyOfTheDeathfeather.CombatSystem.Commands
                 return;
             }
 
-            // Apply Burning status
-            // Duration 3 turns, default damage 2 (handled by status system later)
-            var burningStatus = new StatusEffect(CombatStatusIds.Burning, stacks: 1, duration: 3);
-            defenderIdentity.AddStatus(burningStatus);
+            // Determine if attacker has Explosion talent and apply AOE if so
+            var attackerIdentity = attackerUnit.GetComponent<CombatIdentity>();
+            int explosionLevel = attackerIdentity?.FireSpiritExplosionTPInvested ?? 0;
 
-            Debug.Log($"[Combat] {attackerUnit.name} cast Fire Spirit on {defenderUnit.name}. Applied Burning (3 turns).");
+            if (explosionLevel > 0 && attacker is TurnBasedStrategyFramework.Unity.Units.Unit)
+            {
+                // AOE: apply Burning to all units within radius = explosionLevel around the defender's cell
+                var cellManager = controller.CellManager;
+                var defenderCell = defenderUnit.CurrentCell;
+                if (defenderCell != null)
+                {
+                    var affectedCells = cellManager.GetCells()
+                        .Where(c => c.GetDistance(defenderCell) <= explosionLevel)
+                        .ToList();
+
+                    foreach (var cell in affectedCells)
+                    {
+                        foreach (var unitInCell in cell.CurrentUnits)
+                        {
+                            var unityUnitInCell = unitInCell as TurnBasedStrategyFramework.Unity.Units.Unit;
+                            if (unityUnitInCell == null) continue;
+                            var identity = unityUnitInCell.GetComponent<CombatIdentity>();
+                            if (identity == null) continue;
+                            var burning = new StatusEffect(CombatStatusIds.Burning, stacks: 1, duration: 3);
+                            identity.AddStatus(burning);
+                            Debug.Log($"[Combat] {attackerUnit.name} cast Fire Spirit AOE on {unityUnitInCell.name} at ({cell.GridCoordinates.x},{cell.GridCoordinates.y}). Applied Burning (3 turns).");
+                        }
+                    }
+                }
+            }
+            else
+            {
+                // Single-target burning (legacy behavior)
+                var burningStatus = new StatusEffect(CombatStatusIds.Burning, stacks: 1, duration: 3);
+                defenderIdentity.AddStatus(burningStatus);
+                Debug.Log($"[Combat] {attackerUnit.name} cast Fire Spirit on {defenderUnit.name}. Applied Burning (3 turns).");
+            }
 
             // Decrement AP
             attacker.ActionPoints -= _actionCost;

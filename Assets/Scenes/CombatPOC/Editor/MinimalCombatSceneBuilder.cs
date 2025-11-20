@@ -197,14 +197,23 @@ namespace CombatPOC.Editor
                     existing.gameObject.AddComponent<BountyOfTheDeathfeather.CombatSystem.Abilities.CombatAttackAbility>();
                 }
 
-                // Remove Mirashala-specific abilities if they exist (they require TP investment)
+                // Add Mirashala-specific abilities if talent levels are invested
                 if (string.Equals(name, "Mirashala", System.StringComparison.InvariantCultureIgnoreCase))
                 {
-                    var fireAbility = existing.GetComponent<BountyOfTheDeathfeather.CombatSystem.Abilities.CombatFireSpiritAbility>();
-                    if (fireAbility != null) Object.DestroyImmediate(fireAbility);
-                    
-                    var iceAbility = existing.GetComponent<BountyOfTheDeathfeather.CombatSystem.Abilities.CombatIceSpiritAbility>();
-                    if (iceAbility != null) Object.DestroyImmediate(iceAbility);
+                    var identity = existing.GetComponent<BountyOfTheDeathfeather.CombatSystem.CombatIdentity>();
+                    if (identity != null && identity.FireSpiritTPInvested >= 2)
+                    {
+                        if (existing.GetComponent<BountyOfTheDeathfeather.CombatSystem.Abilities.CombatFireSpiritAbility>() == null)
+                        {
+                            existing.gameObject.AddComponent<BountyOfTheDeathfeather.CombatSystem.Abilities.CombatFireSpiritAbility>();
+                        }
+                    }
+                    // Remove if not unlocked
+                    else
+                    {
+                        var fireAbility = existing.GetComponent<BountyOfTheDeathfeather.CombatSystem.Abilities.CombatFireSpiritAbility>();
+                        if (fireAbility != null) Object.DestroyImmediate(fireAbility);
+                    }
                 }
                 
                 SnapUnitToCell(existing, targetCell);
@@ -287,6 +296,13 @@ namespace CombatPOC.Editor
                     
                     // Add default gear per COMBAT_MECHANICS.md
                     InitializeDefaultGear(identity, name);
+                    // If Mirashala, pre-assign Fire Spirit unlock and Explosion talent level for testing (level 2 as requested)
+                    if (string.Equals(name, "Mirashala", System.StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        identity.FireSpiritTPInvested = 2; // 2 TP to unlock Fire Spirit
+                        identity.FireSpiritExplosionTPInvested = 2; // 2 TP for Explosion level 2
+                        // Optionally deduct talent points (left as-is for now)
+                    }
                 }
             }
             catch
@@ -300,14 +316,23 @@ namespace CombatPOC.Editor
                 go.AddComponent<BountyOfTheDeathfeather.CombatSystem.Abilities.CombatAttackAbility>();
             }
 
-            // Remove Mirashala-specific abilities if they exist (they require TP investment)
+            // Add Mirashala-specific abilities if talent levels are invested
             if (string.Equals(name, "Mirashala", System.StringComparison.InvariantCultureIgnoreCase))
             {
-                var fireAbility = go.GetComponent<BountyOfTheDeathfeather.CombatSystem.Abilities.CombatFireSpiritAbility>();
-                if (fireAbility != null) Object.DestroyImmediate(fireAbility);
-                
-                var iceAbility = go.GetComponent<BountyOfTheDeathfeather.CombatSystem.Abilities.CombatIceSpiritAbility>();
-                if (iceAbility != null) Object.DestroyImmediate(iceAbility);
+                var identity = go.GetComponent<BountyOfTheDeathfeather.CombatSystem.CombatIdentity>();
+                if (identity != null && identity.FireSpiritTPInvested >= 2)
+                {
+                    if (go.GetComponent<BountyOfTheDeathfeather.CombatSystem.Abilities.CombatFireSpiritAbility>() == null)
+                    {
+                        go.AddComponent<BountyOfTheDeathfeather.CombatSystem.Abilities.CombatFireSpiritAbility>();
+                    }
+                }
+                // Remove if not unlocked
+                else
+                {
+                    var fireAbility = go.GetComponent<BountyOfTheDeathfeather.CombatSystem.Abilities.CombatFireSpiritAbility>();
+                    if (fireAbility != null) Object.DestroyImmediate(fireAbility);
+                }
             }
 
             EditorUtility.SetDirty(simpleUnit);
@@ -323,7 +348,7 @@ namespace CombatPOC.Editor
             }
 
             // Clear old cell occupancy if unit was previously assigned
-            if (unit.CurrentCell != null && unit.CurrentCell != cell)
+            if (unit.CurrentCell != null && (Object)unit.CurrentCell != cell)
             {
                 unit.CurrentCell.IsTaken = false;
                 unit.CurrentCell.CurrentUnits.Remove(unit);

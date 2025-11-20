@@ -79,7 +79,7 @@ namespace CombatPOC.Units
         /// </summary>
         private void OnUnitClickedHandler(IUnit clickedUnit)
         {
-            if (_gridController == null || clickedUnit != this)
+            if (_gridController == null || (Object)clickedUnit != this)
             {
                 return;
             }

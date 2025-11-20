@@ -148,12 +148,21 @@ namespace BountyOfTheDeathfeather.CombatSystem.Managers
                 if (result.WasKilled)
                 {
                     Debug.Log($"[CombatStatusManager] {unit.name} died from {source}");
-                    // Handle death (TBSF usually handles death when Health reaches 0 if we call OnUnitDestroyed or similar, 
-                    // but setting Health=0 might be enough if the Unit checks it in Update or we trigger it manually)
-                    // For now, we rely on the Unit's internal check or next interaction.
-                    // Ideally we should call _gridController.UnitManager.DestroyUnit(unit);
-                    // But we are iterating the list, so be careful.
-                    // We'll leave it as Health=0 for now, TBSF often cleans up dead units.
+                    // If death was caused by Burning, spawn a Flame tile on the unit's cell per COMBAT_MECHANICS
+                    if (string.Equals(source, "Burning", System.StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        var cell = unit.CurrentCell;
+                        if (cell != null)
+                        {
+                            var tileManager = UnityEngine.Object.FindFirstObjectByType<BountyOfTheDeathfeather.CombatSystem.Tiles.CombatTileManager>();
+                            if (tileManager != null)
+                            {
+                                tileManager.AddEffect(cell, BountyOfTheDeathfeather.CombatSystem.Tiles.TileEffectType.Flame, 3);
+                                Debug.Log($"[CombatStatusManager] Spawned Flame tile at ({cell.GridCoordinates.x},{cell.GridCoordinates.y}) due to burning death.");
+                            }
+                        }
+                    }
+                    // Handle death (TBSF usually handles death when Health reaches 0 if we call OnUnitDestroyed or similar).
                 }
             }
         }

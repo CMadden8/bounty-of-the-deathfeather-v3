@@ -14,7 +14,7 @@ namespace BountyOfTheDeathfeather.Tests.CombatSystem
             // RNG returns 0.0 -> index 0.
             // Available pools: Piercing(10), Slashing(10), Bludgeoning(10).
             // Index 0 should be Piercing (order depends on list construction, usually insertion order).
-            var rng = new DeterministicRandomProvider(0.0f);
+            var rng = new TestDeterministicRandomProvider(0.0f);
             var resolver = new DamageResolver(rng);
 
             var armour = new ArmourPools(10, 10, 10);
@@ -37,7 +37,7 @@ namespace BountyOfTheDeathfeather.Tests.CombatSystem
         public void ResolveBurningTick_DamageToLife_WhenArmourDepleted()
         {
             // Arrange
-            var rng = new DeterministicRandomProvider(0.0f);
+            var rng = new TestDeterministicRandomProvider(0.0f);
             var resolver = new DamageResolver(rng);
 
             var armour = new ArmourPools(0, 0, 0);
@@ -60,7 +60,7 @@ namespace BountyOfTheDeathfeather.Tests.CombatSystem
             // Arrange
             // Piercing has 1 HP. Damage is 2.
             // RNG selects Piercing.
-            var rng = new DeterministicRandomProvider(0.0f);
+            var rng = new TestDeterministicRandomProvider(0.0f);
             var resolver = new DamageResolver(rng);
 
             var armour = new ArmourPools(1, 0, 0);

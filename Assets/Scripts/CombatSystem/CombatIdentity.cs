@@ -33,6 +33,19 @@ namespace BountyOfTheDeathfeather.CombatSystem
         [Tooltip("Per-combat resource for unlocking abilities. Resets at end of battle.")]
         public int TalentPoints = 2;
         public int MaxTalentPoints = 2;
+        
+        [Header("Talents")]
+        [Header("Fire Spirit")]
+        [Tooltip("TP invested to unlock Fire Spirit (2 TP to unlock)")]
+        public int FireSpiritTPInvested = 0;
+        
+        [Header("Fire Spirit Supports")]
+        [Tooltip("TP invested in Explosion (1 TP per level, increases AOE radius)")]
+        public int FireSpiritExplosionTPInvested = 0;
+        [Tooltip("TP invested in Wildfire (1 TP per level, adds Panicked chance)")]
+        public int FireSpiritWildfireTPInvested = 0;
+        [Tooltip("TP invested in Furnace (1 TP per level, adds extra damage chance)")]
+        public int FireSpiritFurnaceTPInvested = 0;
 
         [Header("Gear Points (GP)")]
         [Tooltip("Per-turn resource for using gear. Resets at start of each turn.")]

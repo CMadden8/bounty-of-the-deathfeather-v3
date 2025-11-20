@@ -237,7 +237,7 @@ namespace BountyOfTheDeathfeather.CombatSystem.UI
                     {
                         // Execute the command manually
                         var command = new CombatAttackCommand(unitComponent, 1); // 1 AP
-                        command.Execute(_currentUnit, _gridController);
+                        _ = command.Execute(_currentUnit, _gridController);
                         
                         // Consume AP visually (TurnResolver should handle logic)
                         DeactivateAttackMode();

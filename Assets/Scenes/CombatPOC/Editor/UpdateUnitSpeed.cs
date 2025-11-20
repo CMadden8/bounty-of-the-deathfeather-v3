@@ -12,7 +12,7 @@ namespace CombatPOC.Editor
         [MenuItem("Tools/Combat POC/Update Unit Movement Speed")]
         public static void UpdateAllUnitsSpeed()
         {
-            var units = Object.FindObjectsOfType<Unit>();
+            var units = Object.FindObjectsByType<Unit>(FindObjectsSortMode.None);
             int count = 0;
             
             foreach (var unit in units)

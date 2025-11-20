@@ -5,6 +5,7 @@ using TurnBasedStrategyFramework.Common.Controllers;
 using TurnBasedStrategyFramework.Common.Controllers.GridStates;
 using TurnBasedStrategyFramework.Common.Units;
 using TurnBasedStrategyFramework.Unity.Units.Abilities;
+using TurnBasedStrategyFramework.Unity.Units;
 using UnityEngine;
 using BountyOfTheDeathfeather.CombatSystem.Commands;
 
@@ -17,6 +18,8 @@ namespace BountyOfTheDeathfeather.CombatSystem.Abilities
     public class CombatFireSpiritAbility : Ability
     {
         private HashSet<IUnit> _targetableUnits;
+        private IEnumerable<IUnit> _unitsInAoe;
+        private IEnumerable<TurnBasedStrategyFramework.Common.Cells.ICell> _cellsInAoe;
         private const int AbilityRange = 4; // Default range for Fire Spirit
         private const int ActionCost = 1;
 
@@ -48,6 +51,16 @@ namespace BountyOfTheDeathfeather.CombatSystem.Abilities
         {
             if (_targetableUnits == null) return;
             gridController.UnitManager.UnMark(_targetableUnits);
+            if (_cellsInAoe != null)
+            {
+                gridController.CellManager.UnMark(_cellsInAoe);
+                _cellsInAoe = null;
+            }
+            if (_unitsInAoe != null)
+            {
+                gridController.UnitManager.UnMark(_unitsInAoe);
+                _unitsInAoe = null;
+            }
         }
 
         public override void OnUnitClicked(IUnit unit, IGridController gridController)
@@ -62,6 +75,99 @@ namespace BountyOfTheDeathfeather.CombatSystem.Abilities
             else if (gridController.UnitManager.GetFriendlyUnits(UnitReference.PlayerNumber).Contains(unit))
             {
                 gridController.GridState = new GridStateUnitSelected(unit, unit.GetBaseAbilities());
+            }
+        }
+
+        public override void OnUnitHighlighted(IUnit unit, IGridController gridController)
+        {
+            // When hovering a targetable unit, show the ability AOE (based on attacker's Explosion level)
+            if (_targetableUnits == null || !_targetableUnits.Contains(unit)) return;
+
+            int explosionLevel = 0;
+            var identityComp = (UnitReference as Unit)?.GetComponent<BountyOfTheDeathfeather.CombatSystem.CombatIdentity>();
+            if (identityComp != null)
+            {
+                explosionLevel = identityComp.FireSpiritExplosionTPInvested;
+            }
+
+            if (explosionLevel <= 0)
+            {
+                // single target - just mark the hovered unit as targetable
+                gridController.UnitManager.MarkAsTargetable(new[] { unit });
+                _unitsInAoe = new[] { unit };
+                return;
+            }
+
+            // compute cells within explosion radius around the hovered unit's cell
+            var targetCell = unit.CurrentCell;
+            if (targetCell == null) return;
+
+            _cellsInAoe = gridController.CellManager.GetCells()
+                .Where(c => c.GetDistance(targetCell) <= explosionLevel)
+                .ToList();
+
+            gridController.CellManager.MarkAsReachable(_cellsInAoe);
+
+            _unitsInAoe = _cellsInAoe.SelectMany(c => c.CurrentUnits).ToList();
+            gridController.UnitManager.MarkAsTargetable(_unitsInAoe);
+        }
+
+        public override void OnUnitDehighlighted(IUnit unit, IGridController gridController)
+        {
+            if (_cellsInAoe != null)
+            {
+                gridController.CellManager.UnMark(_cellsInAoe);
+                _cellsInAoe = null;
+            }
+            if (_unitsInAoe != null)
+            {
+                gridController.UnitManager.UnMark(_unitsInAoe);
+                _unitsInAoe = null;
+            }
+        }
+
+        public override void OnCellHighlighted(ICell cell, IGridController gridController)
+        {
+            // Show AOE preview when hovering empty cells (based on attacker's Explosion level)
+            if (_targetableUnits == null) return;
+
+            int explosionLevel = 0;
+            var identityComp = (UnitReference as Unit)?.GetComponent<BountyOfTheDeathfeather.CombatSystem.CombatIdentity>();
+            if (identityComp != null)
+            {
+                explosionLevel = identityComp.FireSpiritExplosionTPInvested;
+            }
+
+            if (explosionLevel <= 0)
+            {
+                // No AOE to show for single-target; do nothing
+                return;
+            }
+
+            var targetCell = cell;
+            if (targetCell == null) return;
+
+            _cellsInAoe = gridController.CellManager.GetCells()
+                .Where(c => c.GetDistance(targetCell) <= explosionLevel)
+                .ToList();
+
+            gridController.CellManager.MarkAsReachable(_cellsInAoe);
+
+            _unitsInAoe = _cellsInAoe.SelectMany(c => c.CurrentUnits).ToList();
+            gridController.UnitManager.MarkAsTargetable(_unitsInAoe);
+        }
+
+        public override void OnCellDehighlighted(ICell cell, IGridController gridController)
+        {
+            if (_cellsInAoe != null)
+            {
+                gridController.CellManager.UnMark(_cellsInAoe);
+                _cellsInAoe = null;
+            }
+            if (_unitsInAoe != null)
+            {
+                gridController.UnitManager.UnMark(_unitsInAoe);
+                _unitsInAoe = null;
             }
         }
 
